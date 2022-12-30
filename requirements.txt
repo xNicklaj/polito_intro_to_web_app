@@ -1,0 +1,4 @@
+flask
+flask-session
+flask-login
+argon2-cffi

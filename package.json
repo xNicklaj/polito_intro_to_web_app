@@ -1,0 +1,21 @@
+{
+  "name": "final_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "export FLASK_APP=app/__init__.py && flask run",
+    "debug": "export FLASK_APP=app/__init__.py && export FLASK_ENV=development && flask run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xNicklaj/polito_intro_to_web_app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xNicklaj/polito_intro_to_web_app/issues"
+  },
+  "homepage": "https://github.com/xNicklaj/polito_intro_to_web_app#readme"
+}
