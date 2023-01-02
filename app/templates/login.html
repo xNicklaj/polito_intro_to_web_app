@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Login</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    </head>
+    <body class="center col">
+        <form method="POST" action="/api/login" class="dfc">
+            <div class="input-col-wrapper"><label for="username">Inserisci il tuo nome utente</label><input type="text" name="username" id="username" placeholder="Nome utente." class="input-darker input-larger"/></div>
+            <div class="input-col-wrapper"><label for="password">Inserisci la tua password</label><input type="password" name="password" id="password" placeholder="Password." class="input-darker input-larger"/></div> 
+            <button type="submit" class="br25 input-darker px16 auth-button fg-dark bg-accent-color" id="auth-button">Accedi</button>
+        </form>
+        {% if request.args.get("err") == "1002" %}
+        <div class="ad-error auth-msg">
+            <p>Nome utente non registrato.</p>
+        </div>
+        {% elif request.args.get("err") == "1003" %}
+        <div class="ad-error auth-msg">
+            <p>La password inserita non è corretta.</p>
+        </div>
+        {% endif %}
+        <section class="center col">
+            <h3>Oppure</h3>
+            <a href="/signup"><button class="input-darker auth-button accent-color br25 px16">Registrati</button></a>
+        </section>
+    </body>
+</html>

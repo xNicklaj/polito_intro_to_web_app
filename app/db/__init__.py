@@ -1,10 +1,9 @@
-from app import __root__
-from os.path import join, dirname
 import sqlite3
+from os.path import dirname, join
 
 
 def create_connection():
-    conn = sqlite3.connect(join(__root__, "db", "App.db"))
+    conn = sqlite3.connect(join(dirname(__file__), "App.db"))
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     return (conn, cursor)

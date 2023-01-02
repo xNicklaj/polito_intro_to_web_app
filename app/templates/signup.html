@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Signup</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    </head>
+    <body class="center col">
+        <form method="POST" action="/api/signup" class="dfc">
+            <div class="input-col-wrapper"><label for="username">Quale nome utente vuoi usare?</label><input type="text" name="username" id="username" placeholder="Inserisci l'username che vuoi usare." class="input-darker input-larger"/></div>
+            <div class="input-col-wrapper"><label for="password">Inserisci una password per l'accesso</label><input type="password" name="password" id="password" placeholder="Crea una password." class="input-darker input-larger"/></div> 
+            <div class="input-col-wrapper"><label for="display_name">Quale nome vuoi mostrare agli altri utenti?</label><input type="text" name="display_name" id="display_name" placeholder="Inserisci il nome che verrà visualizzato per il tuo profilo." class="input-darker input-larger"/></div> 
+            <div >
+                <input type="hidden" name="is_creator" id="is_creator_hidden" value="0" />
+                <input type="checkbox" name="is_creator" id="is_creator" /><label for="is_creator">Voglio registrare l'account come creator.</label>
+            </div>
+            <button type="submit" class="br25 input-darker px16 auth-button bg-accent-color fg-dark" id="auth-button">Registrati</button>
+        </form>
+        {% if request.args.get("err") == "1000" %}
+        <div class="ad-error auth-msg">
+            <p>I dati inseriti non sono validi.</p>
+        </div>
+        {% elif request.args.get("err") == "1001" %}
+        <div class="ad-error auth-msg">
+            <p>L'username non è disponibile.</p>
+        </div>
+        {% endif %}
+        <section class="center col">
+            <h3>Se hai già un account</h3>
+            <a href="/signup"><button class="input-darker auth-button accent-color br25 px16">Accedi</button></a>
+        </section>
+    </body>
+</html>
