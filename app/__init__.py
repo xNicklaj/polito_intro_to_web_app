@@ -19,15 +19,15 @@ app.config["MAX_CONTENT_PATH"] = 104857600
 app.config.from_object(__name__)
 Session(app)
 
-@app.before_first_request
-def _init_history():
-    session['history'] = History()
-
 @app.before_request
 def _use_history():
     if('/static/' in request.url):
         return
+    if 'history' not in session:
+        session['history'] = History()
     session['history'].push(request.url)
+
+
 
 # Flask-Login configuration
 login_manager = LoginManager()

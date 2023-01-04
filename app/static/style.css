@@ -218,6 +218,7 @@ input{
 
 .emp-box span{
     font-size: 1.5em;
+    text-align: center;
 }
 
 .card-input .stack{
@@ -639,6 +640,10 @@ input[type="file"]{
     margin-top: .2rem;
 }
 
+#root{
+    width: calc(100vh - 5rem)
+}
+
 @media screen and (max-width: 550px) {
     .input-larger{
         min-width: 80vw;
@@ -691,6 +696,11 @@ input[type="file"]{
 
     .pod-meta-presentation div h1{
         font-size: 14px;
+    }
+
+    .emp-box span{
+        font-size: 1em;
+        max-width: 70%;
     }
 }
 
