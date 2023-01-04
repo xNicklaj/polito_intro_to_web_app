@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% import "macro.html" as macro %}
+{% block favicon %}{{ url_for('static', filename='images/'+pod.thumbnail) }}{% endblock %}
+{% block fav_mime %}{{ pod.thumbnail.split('.')[-1] }}{% endblock %}
+{% block title%}{{ ep.title }}{% endblock %}
+{% block content %}
+{{ macro.presentation(ep.title, pod.title, pod.thumbnail, "/api/follow/"+ep.podcast_podcastid|string, is_following, ep.description, "/pod/"+ep.podcast_podcastid|string) }}
+<section>
+    <h2 class="accent-color">Commenti</h2>
+    <div class="df col">
+        {% if comments|length > 0%}
+            {% for c in comments %}
+            <article class="df col" id="comment">
+                <div class="df row"><span class="accent-color">{{ c['user_data'].display_name }}</span><span class="secondary-color">{{ timestampToString(c['comment_data'].date_published) }}</span></div>
+                <p class="secondary-color">{{ c['comment_data'].content }}</p>
+            </article>
+            {% endfor %}
+        {% else%} 
+            {{ macro.empty_section("Invia il primo commento per riempire questa sezione.") }}
+        {% endif %}
+    </div>
+    {% if current_user.is_authenticated %}
+    <h2 class="accent-color">Lascia un commento</h2>
+    <form method="POST" action="/api/newcomment">
+        <input type="hidden" value="{{ ep.podcast_podcastid }}" name="podcastid"/>
+        <input type="hidden" value="{{ ep.episodeid }}" name="episodeid"/>
+        <div class="df col" id="newcomment-wrapper">
+            <textarea name="content" id="newcomment_content" class="secondary-color"></textarea>
+        </div>
+        <input type="submit" value="Invia" class="accent-color p8 btn-square bg-accent-color fg-dark btn-small"/>
+    </form>
+    {% endif %}
+</section>
+{% endblock %}

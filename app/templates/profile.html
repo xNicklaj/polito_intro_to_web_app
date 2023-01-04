@@ -1,4 +1,5 @@
 {% extends "base.html" %} 
+{% import 'macro.html' as macro %}
 {% block title %}
     {% if url_for(request.endpoint) == '/me' %}
         Il tuo profilo
@@ -15,27 +16,37 @@
     <section class="df col w100" id="profile-following">
         <h2 class="accent-color">Podcast seguiti</h2>
         <div class="dfr w100 scrollx">
-            {% for f in following %}
-            {% set thumbnail_url =  'images/'+f.thumbnail%}
-            <a class="p16 df col bg-darker card" href="/pod/{{f.podcastid}}">
-                <img src="{{url_for('static', filename=thumbnail_url)}}"/>
-                <h3 class="accent-color">{{f.title}}</h3>
-                <h4>{{ getUserByUsername(f.user_username).display_name }}</h4>
-            </a>
-            {% endfor %}
+            {% if following|length > 0 %}
+                {% for f in following %}
+                {% set thumbnail_url =  'images/'+f.thumbnail%}
+                <a class="p16 df col bg-darker card" href="/pod/{{f.podcastid}}">
+                    <img src="{{url_for('static', filename=thumbnail_url)}}"/>
+                    <h3 class="accent-color">{{f.title}}</h3>
+                    <h4>{{ getUserByUsername(f.user_username).display_name }}</h4>
+                </a>
+                {% endfor %}
+            {% else%}
+                {{ macro.empty_section("Inizia a seguire dei podcast per riempire questa sezione.") }}
+            {% endif %}
+
         </div>
     </section>
     <section class="df col w100" id="profile-created">
         <h2 class="accent-color">Podcast prodotti</h2>
         <div class="dfr w100 scrollx">
-            {% for f in created %}
-            {% set thumbnail_url =  'images/'+f.thumbnail%}
-            <a class="p16 df col bg-darker card" href="/pod/{{f.podcastid}}">
-                <img src="{{url_for('static', filename=thumbnail_url)}}"/>
-                <h3 class="accent-color">{{f.title}}</h3>
-                <h4>{{ getUserByUsername(f.user_username).display_name }}</h4>
-            </a>
-            {% endfor %}
+            {% if created|length > 0 %}
+                {% for f in created %}
+                {% set thumbnail_url =  'images/'+f.thumbnail%}
+                <a class="p16 df col bg-darker card" href="/pod/{{f.podcastid}}">
+                    <img src="{{url_for('static', filename=thumbnail_url)}}"/>
+                    <h3 class="accent-color">{{f.title}}</h3>
+                    <h4>{{ getUserByUsername(f.user_username).display_name }}</h4>
+                </a>
+                {% endfor %}
+            {% else %}
+                {{ macro.empty_section("Crea dei podcast per riempire questa sezione.") }}
+            {% endif %}
+
         </div>
     </section>
 </section>

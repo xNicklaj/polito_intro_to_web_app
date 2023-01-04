@@ -1,24 +1,10 @@
 {% extends "base.html" %}
+{% import "macro.html" as macro %}
 {% block title %}{{ pod.title }}{% endblock %}
+{% block favicon %}{{ url_for('static', filename='images/'+pod.thumbnail) }}{% endblock %}
+{% block fav_mime %}{{ pod.thumbnail.split('.')[-1] }}{% endblock %}
 {% block content %}
-<section id="podcast-metadata">
-    <article class="df col">
-        <div class="df row" id="pod-meta-presentation">
-            <img src="{{ url_for('static', filename='images/'+pod.thumbnail) }}" />
-            <div class="df col">
-                <h2 class="accent-color">{{ pod.title }}</h2>
-                <h1 class="accent-color">{{ creator.display_name }}</h1>
-            </div>
-        </div>
-        <div class="df row" id="pod-meta-social">
-            <form method="POST" action="/api/follow/{{ pod.podcastid }}"><button class="accent-color p8 square-button {% if not is_following %}bg-accent-color fg-dark{% endif %}">{% if is_following %}Segui già{% else %}Segui{% endif %}</button></form>
-        </div>
-        <div class="df col" id="pod-meta-article">
-            <h2 class="accent-color">Informazioni</h2>
-            <p class="secondary-color">{{ pod.description }}</p>
-        </div>
-    </article>
-</section>
+{{ macro.presentation(pod.title, creator.display_name, pod.thumbnail, "/api/follow/"+pod.podcastid|string, is_following, pod.description, "/p/"+creator.username) }}
 <section class="df col" id="podcast-all-episodes">
     <h1 class="accent-color">Tutti gli episodi</h1>
     <ul class="df col" id="pod-ep-list">
@@ -35,7 +21,7 @@
                         <i class="bi-circle-fill"></i>
                         <i class="bi-play-fill"></i>
                     </div>
-                    <span class="accent-color">{{ timestampToString(e.release_date|int) }}</span>
+                    <span class="accent-color">{{ timestampToString(e.release_date) }}</span>
                 </div>
             </li>
         </a>
@@ -56,11 +42,11 @@
                 <textarea class="secondary-color pod-ep-description" name="newepisode_description" id="newepisode_description" class="secondary-color" placeholder="Inserisci una descrizione dell'episodio"></textarea>
             </div> 
             <div class="stack" id="newepisode_filewrapper">
-                <button type="button" class="accent-color p8 square-button w100">Carica traccia</button>
+                <button type="button" class="accent-color p8 btn-square w100">Carica traccia</button>
                 <input type="file" name="newepisode_track" />
             </div>
         </div>
-        <button class="p8 square-button w100 fg-dark bg-accent-color" id="newepisode_submit">Crea episodio</button>
+        <button class="p8 btn-square btn-small fg-dark bg-accent-color" id="newepisode_submit">Crea episodio</button>
     </form>
 </section>
 {% endif %}

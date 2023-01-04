@@ -9,8 +9,37 @@
 
 {%- macro card(title='title', subtitle='subtitle', thumbnail='', main_href='')%}
 <a class="p16 df col bg-darker card" href="{{main_href}}">
-            <img src="{{url_for('static', filename="images/"+thumbnail)}}"/>
+            <img src="{{url_for('static', filename='images/'+thumbnail)}}"/>
             <h3 class="accent-color">{{title}}</h3>
             <h4>{{subtitle}}</h4>
         </a>
+{%- endmacro %}
+
+{%- macro presentation(title='Title', subtitle='Subtitle', thumbnail='#', button_action='#', button_fill=False, description='Description', subtitle_link='#') %}
+<section class="podcast-metadata">
+    <article class="df col">
+        <div class="df row pod-meta-presentation">
+            <img src="{{ url_for('static', filename='images/'+thumbnail) }}" />
+            <div class="df col">
+                <h2 class="accent-color">{{ title }}</h2>
+                <h1 class="accent-color"><a href="{{ subtitle_link }}">{{ subtitle }}</a></h1>
+            </div>
+        </div>
+        {% if button_action != '#' %}
+        <div class="df row pod-meta-social">
+            <form method="POST" action="{{ button_action }}"><button class="accent-color p8 btn-square btn-small {% if button_fill == True %}bg-accent-color fg-dark{% endif %}">{% if is_following %}Segui già{% else %}Segui{% endif %}</button></form>
+        </div>
+        {% endif %}
+        <div class="df col pod-meta-article">
+            <h2 class="accent-color">Informazioni</h2>
+            <p class="secondary-color">{{ description }}</p>
+        </div>
+    </article>
+</section>
+{%- endmacro %}
+
+{%- macro empty_section(msg) %}
+<div class="dfc center emp-box accent-color w100">
+    <span class="accent-color">{{ msg }}</span>
+</div>
 {%- endmacro %}

@@ -24,6 +24,10 @@ i{
     color: inherit !important;
 }
 
+button{
+    cursor: pointer;
+}
+
 html, body{
     margin: 0;
     background-color: var(--background-color);
@@ -51,6 +55,7 @@ li{
 a{
     text-decoration: none;
     padding: 0;
+    color: inherit;
 }
 
 button{
@@ -110,13 +115,17 @@ input{
     cursor: pointer;
 }
 
-.square-button{
+.btn-square{
     border-radius: 6px;
     border: 1px solid var(--accent-color);
     background-color: transparent;
     min-width: 8em !important;
     text-transform: uppercase;
     font-weight: bold;
+}
+
+.btn-small{
+    max-width: 7em;
 }
 
 .auth-msg{
@@ -161,6 +170,7 @@ input{
     font-size: .7em;
     color: var(--text-disabled-color);
     margin-bottom: 1.5em;
+    max-width: 11em;
     height: 1.5em;
     display: block;
     overflow: hidden;
@@ -198,6 +208,16 @@ input{
     left: 0;
     right: 0;
     bottom: 0;
+}
+
+.emp-box{
+    border: 1px solid var(--accent-color);
+    border-radius: 8px;
+    height: 17.5rem;
+}
+
+.emp-box span{
+    font-size: 1.5em;
 }
 
 .card-input .stack{
@@ -305,6 +325,10 @@ input[type="file"]{
 
 .px16{
     padding: 0 1em;
+}
+
+.mb8{
+    margin-bottom: .5rem;
 }
 
 .pl16{
@@ -470,7 +494,7 @@ input[type="file"]{
     margin-bottom: 1rem;
 }
 
-#pod-meta-presentation img{
+.pod-meta-presentation img{
     width: 12.5rem;
     height: 12.5rem;
     border-radius: 1.2rem;
@@ -479,18 +503,18 @@ input[type="file"]{
 }
 
 
-#pod-meta-presentation div{
+.pod-meta-presentation div{
     justify-content: end;
 }
 
-#pod-meta-presentation div h2{
+.pod-meta-presentation div h2{
     font-size: 60px;
     text-transform: capitalize;
     margin: 0;
 }
 
 
-#pod-meta-presentation div h1{
+.pod-meta-presentation div h1{
     margin: 0;
     text-transform: uppercase;
 }
@@ -503,11 +527,11 @@ input[type="file"]{
     margin-top: 4rem;
 }
 
-#pod-meta-social{
+.pod-meta-social{
     margin: 3rem 0;
 }
 
-#pod-meta-article h2{
+.pod-meta-article h2{
     margin-top: 0;
 }
 
@@ -582,6 +606,38 @@ input[type="file"]{
     width: 10em;
 }
 
+#newcomment-wrapper textarea{
+    height: 6rem;
+    padding: .5em;
+    border: 1px solid var(--accent-color);
+    border-top: 0;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    margin: 1rem 0;
+    font-size: inherit;
+}
+
+#newcomment-wrapper label{
+    font-size: 1.25em;
+}
+
+#comment{
+    margin-bottom: .5rem;
+    padding-bottom: .5rem;
+}
+
+#comment div span:first-child{
+    font-weight: bold;
+}
+
+#comment div span:last-child{
+    margin-left: .5rem;
+}
+
+#comment p{
+    margin: 0;
+    margin-top: .2rem;
+}
 
 @media screen and (max-width: 550px) {
     .input-larger{
@@ -610,30 +666,30 @@ input[type="file"]{
 }
 
 @media screen and (max-width: 700px){
-    #pod-meta-presentation{
+    .pod-meta-presentation{
         flex-direction: column;
     }
 
-    #pod-meta-presentation img{
+    .pod-meta-presentation img{
         width: 4rem;
         height: 4rem;
     }
 
-    #pod-meta-presentation div{
+    .pod-meta-presentation div{
         margin-top: 1rem;
     }
 
-    #pod-meta-presentation div h2{
+    .pod-meta-presentation div h2{
         font-size: 40px;
         line-height: 1;
     }
 
-    #pod-meta-social{
+    .pod-meta-social{
         margin: 2rem 0;
     }
 
 
-    #pod-meta-presentation div h1{
+    .pod-meta-presentation div h1{
         font-size: 14px;
     }
 }
