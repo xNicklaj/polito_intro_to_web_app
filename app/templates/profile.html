@@ -1,5 +1,42 @@
 {% extends "base.html" %} 
-{% block title %}Il tuo profilo{% endblock %}
+{% block title %}
+    {% if url_for(request.endpoint) == '/me' %}
+        Il tuo profilo
+    {% else %}
+        Profilo di {{ user.display_name }}
+    {% endif %}
+{% endblock %}
 {% block content %}
-
+<section id="profile" class="df col">
+    <section class="df col" id="profile-info">
+        <span class="df row"><h2 class="accent-color">{{ user.display_name }}</h2>{% if current_user.is_authenticated and current_user.username == user.username %}<a href="/api/signout"><i class="bi-box-arrow-right"></i></a>{% endif %}</span>
+        <h1 class="accent-color">{{ user.username }}</h1>
+    </section> 
+    <section class="df col w100" id="profile-following">
+        <h2 class="accent-color">Podcast seguiti</h2>
+        <div class="dfr w100 scrollx">
+            {% for f in following %}
+            {% set thumbnail_url =  'images/'+f.thumbnail%}
+            <a class="p16 df col bg-darker card" href="/pod/{{f.podcastid}}">
+                <img src="{{url_for('static', filename=thumbnail_url)}}"/>
+                <h3 class="accent-color">{{f.title}}</h3>
+                <h4>{{ getUserByUsername(f.user_username).display_name }}</h4>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    <section class="df col w100" id="profile-created">
+        <h2 class="accent-color">Podcast prodotti</h2>
+        <div class="dfr w100 scrollx">
+            {% for f in created %}
+            {% set thumbnail_url =  'images/'+f.thumbnail%}
+            <a class="p16 df col bg-darker card" href="/pod/{{f.podcastid}}">
+                <img src="{{url_for('static', filename=thumbnail_url)}}"/>
+                <h3 class="accent-color">{{f.title}}</h3>
+                <h4>{{ getUserByUsername(f.user_username).display_name }}</h4>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+</section>
 {% endblock %}

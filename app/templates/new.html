@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% import 'macro.html' as macro %}
+{% block title %}Nuovo podcast{% endblock %}
+{% block content %}
+<section id="podcastlist" class="df col">
+    {%- call macro.scrollx(title="Modifica i tuoi podcast") %}
+        {% for p in created %}
+        {{ macro.card(p.title, current_user.display_name, p.thumbnail, "/pod/" + p.podcastid|string) }}
+        {% endfor%}
+    {%- endcall %}
+</section>
+<section id="podcastlist" class="df col">
+    <h2 class="accent-color">Oppure crea un nuovo podcast</h2>
+    <form method="POST" action="/api/newpodcast" class="df row" enctype="multipart/form-data">
+        <div class="p16 df col bg-darker card-input" href="{{main_href}}">
+            <div class="stack">
+                <img src="{{ url_for('static', filename='images/pod_default.jpg') }}">
+                <button></button>
+                <input type="file" name="newpodcast_thumbnail"/>
+            </div>
+            <h3 class="accent-color"><input type="text" name="newpodcast_title" placeholder="Titolo"/></h3>
+            <h4>{{ current_user.display_name }}</h4>
+        </div>
+        <textarea name="newpodcast_description" class="bg-darker w100" placeholder="Di cosa tratterà il tuo podcast?"></textarea>
+    </form>
+</section>
+{% endblock%}

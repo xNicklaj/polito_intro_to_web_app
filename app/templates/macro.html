@@ -1,0 +1,16 @@
+{%- macro scrollx(title='title', caller='') %}
+<section class="df col w100" id="latest">
+    <h2 class="accent-color">{{title}}</h2>
+    <div class="dfr w100 scrollx">
+        {{caller()}}
+    </div>
+</section>
+{%- endmacro %}
+
+{%- macro card(title='title', subtitle='subtitle', thumbnail='', main_href='')%}
+<a class="p16 df col bg-darker card" href="{{main_href}}">
+            <img src="{{url_for('static', filename="images/"+thumbnail)}}"/>
+            <h3 class="accent-color">{{title}}</h3>
+            <h4>{{subtitle}}</h4>
+        </a>
+{%- endmacro %}

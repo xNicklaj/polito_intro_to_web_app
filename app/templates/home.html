@@ -1,2 +1,20 @@
 {% extends "base.html" %}
+{% import 'macro.html' as macro %}
 {% block title%}Home{% endblock %}
+{% block content %}
+<section id="home" class="df col"> 
+    {%- call macro.scrollx(title="Ultime uscite") %}
+        {% for d in data["latest"] %}
+        {{ macro.card(data['episode'][(d[0], d[1])].title, data['podcast'][d[0]].title, data['podcast'][d[0]].thumbnail, "/pod/" + d[0]|string + "/" + d[1]|string) }}
+        {% endfor %}
+    {%- endcall %}
+    {% if current_user.is_authenticated %}
+        <section class="df col" id="genres">
+            <h2 class="accent-color">I generi che ti piacciono</h2>
+            <div class="dfr">
+                
+            </div>
+        </section>
+    {% endif %}
+</section>
+{% endblock %}

@@ -8,7 +8,7 @@ def create_connection():
     cursor = conn.cursor()
     return (conn, cursor)
 
-def query(sql, param):
+def query(sql, param=()):
     conn, cursor = create_connection()
     cursor.execute(sql, param)
     res = cursor.fetchall()

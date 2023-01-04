@@ -22,7 +22,7 @@ class User(UserMixin):
     
     def getFollowingPodcasts(self):
         sql = "SELECT podcast_podcastid FROM following WHERE user_username = ?"
-        res = query(sql, (self.username))
+        res = query(sql, (self.username, ))
         return [r[0] for r in res]
 
 # Methods

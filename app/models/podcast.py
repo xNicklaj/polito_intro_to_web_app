@@ -3,6 +3,10 @@ from dataclasses import dataclass
 from app.db import query
 from app.models.episode import getEpisodeByPodcastid, rowToObject
 
+from random import randint
+
+ERR_COULD_NOT_CREATE = -1
+
 @dataclass 
 class Podcast():
     podcastid : int
@@ -35,8 +39,13 @@ def getAllPodcasts():
 
 def getPodcastById(podcastid):
     sql = "SELECT * FROM podcast WHERE podcastid = ?"
-    params = (podcastid)
+    params = (podcastid,)
     return rowToObject(query(sql, params)[0])
+
+def getPodcastByUsername(username):
+    sql = "SELECT * FROM podcast WHERE user_username = ?"
+    params = (username,)
+    return [rowToObject(q) for q in query(sql, params)]
 
 def getAllEpisodesInPodcast(podcastid):
     return getEpisodeByPodcastid(podcastid)
@@ -46,3 +55,13 @@ def getAllCategories():
     res = query(sql, ())
     return [r[0] for r in res]
 
+def createNew(description='', title='', thumbnail='', user_username=0):
+    sql = "INSERT INTO podcast VALUES(?, ?, ?, ?, ?)"
+    podcastid = randint(0, 999999)
+    while(query("SELECT * FROM podcast WHERE podcastid = ?", (podcastid,)) != []):
+        podcastid = randint(0, 999999)
+    query(sql, (podcastid, description, title, thumbnail, user_username,))
+    res = query("SELECT * FROM podcast WHERE podcastid = ?", (podcastid,))
+    if(res == []):
+        return -1
+    return rowToObject(res[0])

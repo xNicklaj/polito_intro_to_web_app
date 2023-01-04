@@ -13,7 +13,7 @@
             <div class="input-col-wrapper"><label for="password">Inserisci una password per l'accesso</label><input type="password" name="password" id="password" placeholder="Crea una password." class="input-darker input-larger"/></div> 
             <div class="input-col-wrapper"><label for="display_name">Quale nome vuoi mostrare agli altri utenti?</label><input type="text" name="display_name" id="display_name" placeholder="Inserisci il nome che verrà visualizzato per il tuo profilo." class="input-darker input-larger"/></div> 
             <div >
-                <input type="hidden" name="is_creator" id="is_creator_hidden" value="0" />
+                <input type="hidden" name="is_creator" id="is_creator_hidden" value="off" />
                 <input type="checkbox" name="is_creator" id="is_creator" /><label for="is_creator">Voglio registrare l'account come creator.</label>
             </div>
             <button type="submit" class="br25 input-darker px16 auth-button bg-accent-color fg-dark" id="auth-button">Registrati</button>
@@ -29,7 +29,8 @@
         {% endif %}
         <section class="center col">
             <h3>Se hai già un account</h3>
-            <a href="/signup"><button class="input-darker auth-button accent-color br25 px16">Accedi</button></a>
+            <a href="/login"><button class="input-darker auth-button accent-color br25 px16">Accedi</button></a>
         </section>
+        <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
     </body>
 </html>

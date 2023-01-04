@@ -9,25 +9,30 @@
         <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
     </head>
     <body>
-        <header class="w100 dfr p8 base-header">
+        <header class="dfr p8 base-header">
             <input type="text" class="i20r tc input-darker pl16" placeholder="Cerca..."/>
-            <div class="fjse">
+            <div class="fjse dfr" id="tr-menu">
+            {% if current_user.is_authenticated and current_user.is_creator %}
+                <a href="/new"><button class="br25 accent-color b0"><i class="bi-plus-circle-fill fs2"></i></button></a>
+            {% endif %}
             {% if current_user.is_authenticated %}
                 <a href="/me"><button class="br25 input-darker px16 accent-color">{{ current_user.username }}</button></a>
             {% else %}
-                <a href="/signup"><button class="br25 input-darker px16 accent-color">Signup</button></a>
-                <a href="/login"><button class="br25 input-darker px16 accent-color">Login</button></a>
+                <a href="/signup" id="signup-prompt"><button class="br25 input-darker px16 accent-color">Signup</button></a>
+                <a href="/login" id="login-prompt"><button class="br25 input-darker px16 accent-color">Login</button></a>
             {% endif %}
             </div>
         </header>
         <div class="dfr" id="root">
-           <aside class="dfc">
+           <aside class="df col" id="menu-wrapper">
                 <ul id="menu">
                     <a class="w100 input-darker dfr accent-color {% if url_for(request.endpoint) == '/' %}bg-accent-color fg-dark{% endif %}" href="/"><li><i class="bi-house-door-fill"></i><span>Home</span></li></a>
                     <a class="w100 input-darker dfr accent-color {% if url_for(request.endpoint) == '/subscriptions' %}bg-accent-color fg-dark{% endif %}" href="/subscriptions"><li><i class="bi-disc-fill"></i><span>Le tue iscrizioni</span></li></a>
                 </ul>
-           </aside> 
-           {% block content %}{% endblock %}
+            </aside> 
+            <div class="w100 p8" id="content">{% block content %}{% endblock %}</div>
         </div>
     </body>
+    <!-- Progetto IAW   -->
+    <!-- Autore: Simone Aronica  -->
 </html>

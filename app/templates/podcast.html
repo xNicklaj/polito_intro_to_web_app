@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ pod.title }}{% endblock %}
+{% block content %}
+<section id="podcast-metadata">
+    <article class="df col">
+        <div class="df row" id="pod-meta-presentation">
+            <img src="{{ url_for('static', filename='images/'+pod.thumbnail) }}" />
+            <div class="df col">
+                <h2 class="accent-color">{{ pod.title }}</h2>
+                <h1 class="accent-color">{{ creator.display_name }}</h1>
+            </div>
+        </div>
+        <div class="df row" id="pod-meta-social">
+            <form method="POST" action="/api/follow/{{ pod.podcastid }}"><button class="accent-color p8 square-button {% if not is_following %}bg-accent-color fg-dark{% endif %}">{% if is_following %}Segui già{% else %}Segui{% endif %}</button></form>
+        </div>
+        <div class="df col" id="pod-meta-article">
+            <h2 class="accent-color">Informazioni</h2>
+            <p class="secondary-color">{{ pod.description }}</p>
+        </div>
+    </article>
+</section>
+<section class="df col" id="podcast-all-episodes">
+    <h1 class="accent-color">Tutti gli episodi</h1>
+    <ul class="df col" id="pod-ep-list">
+    {% for e in ep %}
+        <a class="w100" href="/pod/{{e.podcast_podcastid}}/{{e.episodeid}}">
+            <li class="df col">
+                <div class="df row pod-ep-info">
+                    <img src="{{ url_for('static', filename='images/'+pod.thumbnail) }}"/>
+                    <h1 class="accent-color">{{ e.title }}</h1>
+                </div>
+                <p class="secondary-color pod-ep-description">{{ e.description }}</p>
+                <div class="df row" id="pod-ep-control">
+                    <div class="stack" id="pod-ep-compositeplay">
+                        <i class="bi-circle-fill"></i>
+                        <i class="bi-play-fill"></i>
+                    </div>
+                    <span class="accent-color">{{ timestampToString(e.release_date|int) }}</span>
+                </div>
+            </li>
+        </a>
+    {% endfor %}
+    </ul>
+</section>
+{% if pod.user_username == current_user.username %}
+<section>
+    <h1 class="accent-color">Aggiungi un episodio</h1>
+    <form class="df col" method="POST" action="/api/newepisode" enctype="multipart/form-data">
+        <div class="df row">
+            <div class="df col w100">
+                <div class="df row pod-ep-info">
+                    <img src="{{ url_for('static', filename='images/'+pod.thumbnail) }}"/>
+                    <input type="text" name="newepisode_title" id="newepisode_title" class="accent-color w100" placeholder="Titolo"/>
+                    <input type="hidden" name="newepisode_podcastid" value="{{ pod.podcastid }}" />
+                </div>
+                <textarea class="secondary-color pod-ep-description" name="newepisode_description" id="newepisode_description" class="secondary-color" placeholder="Inserisci una descrizione dell'episodio"></textarea>
+            </div> 
+            <div class="stack" id="newepisode_filewrapper">
+                <button type="button" class="accent-color p8 square-button w100">Carica traccia</button>
+                <input type="file" name="newepisode_track" />
+            </div>
+        </div>
+        <button class="p8 square-button w100 fg-dark bg-accent-color" id="newepisode_submit">Crea episodio</button>
+    </form>
+</section>
+{% endif %}
+{% endblock %}

@@ -2,3 +2,5 @@
 flask_session
 **/App.db
 .vscode
+app/static/audio
+app/static/images
