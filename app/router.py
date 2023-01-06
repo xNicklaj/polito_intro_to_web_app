@@ -80,7 +80,15 @@ def home():
 @app.route("/subscriptions")
 @login_required
 def subscriptions():
-    return render_template("subscriptions.html")
+    usr = user.getUserByUsername(current_user.username)
+    following = [podcast.getPodcastById(f) for f in usr.getFollowingPodcasts()]
+    data = list()
+    for f in following:
+        data.append({
+            'podcast_meta': f,
+            'episodes_data': f.getAllEpisodes()
+        })
+    return render_template("subscriptions.html", data=data)
 
 @app.route("/me")
 @login_required
@@ -151,7 +159,7 @@ def follow(podcastid):
         query("DELETE FROM following WHERE user_username = ? AND podcast_podcastid = ?", (current_user.username, podcastid,))
     else: 
         query("INSERT INTO following VALUES(?, ?)", (current_user.username, podcastid,))
-    return redirect(f"/pod/{podcastid}")
+    return redirect(session["history"].get(-1))
 
 @app.route("/api/newepisode", methods=["POST"])
 @login_required
@@ -202,3 +210,36 @@ def newcomment():
     if(comment.createNew(podcastid, episodeid, username, content) == comment.ERR_COULD_NOT_CREATE):
         return redirect(session['history'].get(-1) + '?err=1005')
     return redirect(session['history'].get(-1))
+
+@app.route('/play/<podcastid>/<episodeid>')
+@login_required
+def playtrack(podcastid, episodeid):
+    if podcastid == None or episodeid == None:
+        return 'ERROR: Data mismatch.', 404
+    
+    pod = podcast.getPodcastById(podcastid)
+    try:
+        ep = list(filter(lambda e : e.episodeid == int(episodeid), pod.getAllEpisodes()))[0]
+    except:
+        return 'ERROR: Data mismatch.', 404
+    session['last_played']['pod'] = pod
+    session['last_played']['ep'] = ep
+    session['last_played']['meta']['is_playing'] = True
+    session['last_played']['meta']['currentTime'] = 0
+    session['last_played']['meta']['tickid'] = 0
+    return redirect(session["history"].get(-1))
+
+@app.route('/tickupdate', methods=["POST"])
+def updatetrack():
+    is_playing = request.form["isPlaying"] == 'true'
+    current_time = request.form["currentTime"]
+    tickid = request.form["tickid"]
+    if(is_playing == None or current_time == None):
+        return "ERROR: Data mismatch.", 500
+    if  int(tickid) > session['last_played']['meta']['tickid']:
+        session['last_played']['meta'] = {
+            'is_playing': is_playing,
+            'current_time': float(current_time),
+            'tickid': int(tickid)
+        }
+    return "Ok.", 200

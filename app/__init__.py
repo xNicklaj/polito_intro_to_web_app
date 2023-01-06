@@ -20,13 +20,27 @@ app.config.from_object(__name__)
 Session(app)
 
 @app.before_request
-def _use_history():
-    if('/static/' in request.url):
+def use_history():
+    if('/static/' in request.url or '/tickupdate' in request.url):
         return
     if 'history' not in session:
         session['history'] = History()
     session['history'].push(request.url)
 
+@app.before_request
+def use_media():
+    if 'last_played' not in session:
+        session['last_played'] = dict()
+        session['last_played']['ep'] = None
+        session['last_played']['pod'] = None
+        session['last_played']['meta'] = {
+            'is_playing': False,
+            'current_time': 0,
+            'tickid': 0
+        }
+    if '/tickupdate' not in request.url:
+        session['last_played']['meta']['tickid'] = 0
+    print(session["last_played"]["meta"])
 
 
 # Flask-Login configuration

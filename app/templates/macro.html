@@ -15,7 +15,7 @@
         </a>
 {%- endmacro %}
 
-{%- macro presentation(title='Title', subtitle='Subtitle', thumbnail='#', button_action='#', button_fill=False, description='Description', subtitle_link='#') %}
+{%- macro presentation(title='Title', subtitle='Subtitle', thumbnail='#', button_action='#', button_fill=False, description='Description', subtitle_link='#', caller='') %}
 <section class="podcast-metadata">
     <article class="df col">
         <div class="df row pod-meta-presentation">
@@ -28,6 +28,9 @@
         {% if button_action != '#' %}
         <div class="df row pod-meta-social">
             <form method="POST" action="{{ button_action }}"><button class="accent-color p8 btn-square btn-small {% if button_fill == True %}bg-accent-color fg-dark{% endif %}">{% if is_following %}Segui già{% else %}Segui{% endif %}</button></form>
+            {% if caller != '' %}
+            {{ caller() }}
+            {% endif %}
         </div>
         {% endif %}
         <div class="df col pod-meta-article">
@@ -41,5 +44,12 @@
 {%- macro empty_section(msg) %}
 <div class="dfc center emp-box accent-color w100">
     <span class="accent-color">{{ msg }}</span>
+</div>
+{%- endmacro %}
+
+{%- macro compositeplay(id='', data_pod='', data_ep='') %}
+<div class="stack compositeplay" id="{{ id }}" {% if data_pod != '' and data_ep != ''%}data-podcastid='{{ data_pod }}' data-episodeid='{{ data_ep }}'{% endif %}>
+    <i class="bi-circle-fill"></i>
+    <i class="bi-play-fill"></i>
 </div>
 {%- endmacro %}

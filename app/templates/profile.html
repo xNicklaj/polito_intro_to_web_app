@@ -26,7 +26,7 @@
                 </a>
                 {% endfor %}
             {% else%}
-                {{ macro.empty_section("Inizia a seguire dei podcast per riempire questa sezione.") }}
+                {{ macro.empty_section("Inizia a seguire dei podcast per riempire questa sezione." if current_user.username == user.username else "Questo utente non segue nessun podcast.") }}
             {% endif %}
 
         </div>
@@ -44,7 +44,7 @@
                 </a>
                 {% endfor %}
             {% else %}
-                {{ macro.empty_section("Crea dei podcast per riempire questa sezione.") }}
+                {{ macro.empty_section("Crea dei podcast per riempire questa sezione." if current_user.username == user.username else "Questo utente non ha creato nessun podcast.") }}
             {% endif %}
 
         </div>

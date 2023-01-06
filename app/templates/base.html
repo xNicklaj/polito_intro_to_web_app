@@ -1,3 +1,4 @@
+{% import "macro.html" as macro %}
 <!DOCTYPE html>
 <html lang="it">
     <head>
@@ -33,6 +34,28 @@
             </aside> 
             <div class="w100 p8" id="content">{% block content %}{% endblock %}</div>
         </div>
+        <div class="df col w100 media-player">
+            <input type="range" class="w100" min="0" value="0" max="100" step=".1" id="mp-progress-bar"/>
+            <div class="df row p16 w100">
+                {% if session['last_played']['ep'] != None %}
+                    <audio src="{{ url_for('static', filename='audio/'+session['last_played']['ep'].track) }}" preload="metadata" {% if session['last_played']['meta']['is_playing'] == True %} autoplay mute {% endif %}{% if session['last_played']['meta']['current_time'] %} data-currentTime="{{ session['last_played']['meta']['current_time'] }}" {% endif %}></audio>
+                {% endif %}
+                <div class="df col mp-play-meta">
+                    <a class="accent-color b highlight" href="/pod/{{ session['last_played']['ep'].podcast_podcastid }}/{{ session['last_played']['ep'].episodeid }}">{{ session["last_played"]["ep"].title }}</a>
+                    <a class="secondary-color highlight"href="/pod/{{ session['last_played']['ep'].podcast_podcastid }}">{{ session["last_played"]["pod"].title }}</a>
+                </div> 
+                <div class="dfc center mp-play-wrapper">
+                    {{ macro.compositeplay("mp-play-button") }}
+                </div>
+                <div class="df row mp-volume-wrapper">
+                    <i class="accent-color bi-volume-down"></i>
+                    <input type="range" min="0" value="100" max="100" id="mp-volume-bar"/>
+                </div>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='js/media-player.js') }}"></script>
+        {% block scripts %}
+        {% endblock %}
     </body>
     <!-- Progetto IAW   -->
     <!-- Autore: Simone Aronica  -->

@@ -9,22 +9,21 @@
     <h1 class="accent-color">Tutti gli episodi</h1>
     <ul class="df col" id="pod-ep-list">
     {% for e in ep %}
-        <a class="w100" href="/pod/{{e.podcast_podcastid}}/{{e.episodeid}}">
-            <li class="df col">
-                <div class="df row pod-ep-info">
-                    <img src="{{ url_for('static', filename='images/'+pod.thumbnail) }}"/>
-                    <h1 class="accent-color">{{ e.title }}</h1>
-                </div>
-                <p class="secondary-color pod-ep-description">{{ e.description }}</p>
-                <div class="df row" id="pod-ep-control">
-                    <div class="stack" id="pod-ep-compositeplay">
-                        <i class="bi-circle-fill"></i>
-                        <i class="bi-play-fill"></i>
+        <li class="df col">
+            <a class="w100" href="/pod/{{e.podcast_podcastid}}/{{e.episodeid}}">
+                <div class="df col">
+                    <div class="df row pod-ep-info">
+                        <img src="{{ url_for('static', filename='images/'+pod.thumbnail) }}"/>
+                        <h1 class="accent-color highlight">{{ e.title }}</h1>
                     </div>
-                    <span class="accent-color">{{ timestampToString(e.release_date) }}</span>
+                    <p class="secondary-color pod-ep-description">{{ e.description }}</p>
                 </div>
-            </li>
-        </a>
+            </a>
+            <div class="df row" id="pod-ep-control">
+                <a href="/play/{{ e.podcast_podcastid }}/{{ e.episodeid }}">{{ macro.compositeplay(data_pod=e.podcast_podcastid, data_ep=e.episodeid) }}</a>
+                <span class="accent-color">{{ timestampToString(e.release_date) }}</span>
+            </div>
+        </li>
     {% endfor %}
     </ul>
 </section>

@@ -1,2 +1,16 @@
 {% extends "base.html" %}
-{% block title%}Le tue iscrizioni{% endblock %}
+{% import "macro.html" as macro %}
+{% block title %}Le tue iscrizioni{% endblock %}
+{% block content %}
+{% if data|length > 0 %}
+{% for d in data %}
+<section class="df col">
+    {%- call macro.scrollx(title=d["podcast_meta"].title)%}
+        {% for e in d["episodes_data"] %}
+        {{ macro.card(e.title, d["podcast_meta"].title, d["podcast_meta"].thumbnail, "/pod/"+e.podcast_podcastid|string + "/" + e.episodeid|string) }}
+        {% endfor %}
+    {%- endcall %}
+</section>
+{% endfor %}
+{% endif %}
+{% endblock %}

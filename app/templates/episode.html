@@ -4,7 +4,11 @@
 {% block fav_mime %}{{ pod.thumbnail.split('.')[-1] }}{% endblock %}
 {% block title%}{{ ep.title }}{% endblock %}
 {% block content %}
-{{ macro.presentation(ep.title, pod.title, pod.thumbnail, "/api/follow/"+ep.podcast_podcastid|string, is_following, ep.description, "/pod/"+ep.podcast_podcastid|string) }}
+{% call macro.presentation(ep.title, pod.title, pod.thumbnail, "/api/follow/"+ep.podcast_podcastid|string, is_following, ep.description, "/pod/"+ep.podcast_podcastid|string) %}
+<div class="df row" id="pod-ep-play">
+    <a href="/play/{{ ep.podcast_podcastid }}/{{ ep.episodeid }}">{{ macro.compositeplay() }}</a>
+</div>
+{% endcall %}
 <section>
     <h2 class="accent-color">Commenti</h2>
     <div class="df col">

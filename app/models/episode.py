@@ -35,7 +35,7 @@ def rowToObject(row):
     return Episode(row["podcast_podcastid"], row["episodeid"], row["title"], row["release_date"], row["track"], row["description"])
 
 def getEpisodeByPodcastid(podcastid):
-    sql = "SELECT * FROM episode WHERE podcast_podcastid = ?"
+    sql = "SELECT * FROM episode WHERE podcast_podcastid = ? ORDER BY release_date DESC"
     params = (podcastid,)
     res = query(sql, params)
     return [rowToObject(p) for p in res]
