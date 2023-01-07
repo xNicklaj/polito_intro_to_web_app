@@ -30,4 +30,7 @@ class History:
             index = abs(index)
         if(index > self.max_size):
             return None
-        return self.buff[::-1][index]
+        try:
+            return self.buff[::-1][index]
+        except:
+            return None

@@ -12,5 +12,7 @@
     {%- endcall %}
 </section>
 {% endfor %}
+{% else %}
+{{ macro.empty_section("Inizia a seguire dei podcast per riempire questa sezione.") }}
 {% endif %}
 {% endblock %}

@@ -4,7 +4,17 @@
 {% block favicon %}{{ url_for('static', filename='images/'+pod.thumbnail) }}{% endblock %}
 {% block fav_mime %}{{ pod.thumbnail.split('.')[-1] }}{% endblock %}
 {% block content %}
-{{ macro.presentation(pod.title, creator.display_name, pod.thumbnail, "/api/follow/"+pod.podcastid|string, is_following, pod.description, "/p/"+creator.username) }}
+{% call macro.presentation(pod.title, creator.display_name, pod.thumbnail, "/api/follow/"+pod.podcastid|string, is_following, pod.description, "/p/"+creator.username) %}
+<div class="df row" id="pod-action">
+    {% if ep|length > 0%}
+    <a href="/play/{{ pod.podcastid }}/{{ ep[ep|length - 1].episodeid }}">{{ macro.compositeplay() }}</a>
+    {% endif %}
+    {% if pod.user_username == current_user.username %}
+    <button class="action-btn" id="edit-btn"><i class="bi-pencil accent-color"></i></button>
+    <button class="action-btn" id="delete-btn"><i class="bi-trash accent-color"></i></button>
+    {% endif %}
+</div>
+{% endcall %}
 <section class="df col" id="podcast-all-episodes">
     <h1 class="accent-color">Tutti gli episodi</h1>
     <ul class="df col" id="pod-ep-list">
@@ -49,4 +59,7 @@
     </form>
 </section>
 {% endif %}
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/action.js') }}"></script>
 {% endblock %}

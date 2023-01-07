@@ -106,13 +106,6 @@ def profile(username):
     created = podcast.getPodcastByUsername(usr.username)
     return render_template("profile.html", user=usr, following=following, getUserByUsername=user.getUserByUsername, created=created)
 
-@app.route("/api/upload_demo", methods=["POST"])
-@login_required
-def upload():
-    f = request.files['file']
-    f.save(hash(f.filename) + splitext(f.filename)[-1])
-    return "Ok"
-
 @app.route("/new")
 @login_required
 def new():
@@ -128,7 +121,7 @@ def newpodcast():
         return 404.
     if(request.form["newpodcast_description"] == None or request.form["newpodcast_title"] == None):
         return redirect(session["history"].get(-1) + "?err=1004")
-    if request.files["newpodcast_thumbnail"].content_length > 0:
+    if request.files["newpodcast_thumbnail"].content_length > 0 and "image" in request.files["newpodcast_thumbnail"].mimetype:
         f = request.files["newpodcast_thumbnail"]
         filename = str(abs(hash(f.filename))) + splitext(f.filename)[-1]
         savefile(f, join("images", filename))
@@ -136,6 +129,7 @@ def newpodcast():
         filename = "pod_default.jpg"
         
     p = podcast.createNew(request.form["newpodcast_description"], request.form["newpodcast_title"], filename, current_user.username)
+    print(p, session["history"])
     if(p == podcast.ERR_COULD_NOT_CREATE):
         return redirect(session["history"].get(-1) + "?err=1005")
     return redirect(f"/pod/{p.podcastid}")
@@ -172,6 +166,8 @@ def newepisode():
         return redirect("/pod/" +  request.form["newepisode_podcastid"] + "?err=1006")
     
     f = request.files["newepisode_track"]
+    if("audio" not in f.mimetype):
+        return "ERROR: Data mismatch", 500
     ext = splitext(f.filename)[-1]
     e = episode.createNew(request.form["newepisode_podcastid"], request.form["newepisode_title"], request.form["newepisode_description"], ext)
     savefile(f, join("audio", e.track)) 
@@ -243,3 +239,87 @@ def updatetrack():
             'tickid': int(tickid)
         }
     return "Ok.", 200
+
+@app.route('/api/update/episode', methods=["POST"])
+@login_required
+def updateepisode():
+    podcastid = request.form['update_podcastid']
+    episodeid = request.form['update_episodeid']
+    title = request.form['update_title']
+    description = request.form['update_description']
+    if(podcastid == None or episodeid == None or title == None or description == None):
+        return "ERROR: Data mismatch.", 500
+    pod = podcast.getPodcastById(podcastid)
+    if(pod == None):
+        return "ERROR: Data mismatch.", 500
+    if(pod.user_username != current_user.username):
+        return 401, "Unauthorized." 
+    if int(episodeid) not in [e.episodeid for e in pod.getAllEpisodes()]:
+        return "ERROR: Data mismatch.", 500
+    query("UPDATE episode SET title = ?, description = ? WHERE podcast_podcastid = ? AND episodeid = ?", (title, description, podcastid, episodeid,))
+    return redirect(session["history"].get(-1))
+            
+@app.route('/api/update/podcast', methods=["POST"])
+@login_required
+def updatepodcast():
+    podcastid = request.form['update_podcastid']
+    title = request.form['update_title']
+    description = request.form['update_description']
+    if(podcastid == None or title == None or description == None):
+        return "ERROR: Data mismatch.", 500
+    pod = podcast.getPodcastById(podcastid)
+    if(pod == None):
+        return "ERROR: Data mismatch.", 500
+    if(pod.user_username != current_user.username):
+        return 401, "Unauthorized." 
+    query("UPDATE podcast SET title = ?, description = ? WHERE podcastid = ?", (title, description, podcastid,))
+    return redirect(session["history"].get(-1))
+    
+@app.route('/api/remove/podcast', methods=["POST"])
+@login_required
+def removepodcast():
+    podcastid = request.form['podcastid']
+    if(podcastid == None):
+        return "ERROR: Data mismatch.", 500
+    pod = podcast.getPodcastById(podcastid)
+    if(pod.user_username != current_user.username):
+        return 401, "Unauthorized." 
+    query("DELETE FROM podcast WHERE podcastid = ?", (podcastid,))
+    return redirect('/')
+
+@app.route('/api/remove/episode', methods=["POST"])
+@login_required
+def removeepisode():
+    podcastid = request.form['podcastid']
+    episodeid = request.form['episodeid']
+    if(podcastid == None):
+        return "ERROR: Data mismatch.", 500
+    pod = podcast.getPodcastById(podcastid)
+    if(pod.user_username != current_user.username):
+        return 401, "Unauthorized." 
+    if int(episodeid) not in [e.episodeid for e in pod.getAllEpisodes()]:
+        return "ERROR: Data mismatch.", 500
+    query("DELETE FROM episode WHERE podcast_podcastid = ? AND episodeid = ?", (podcastid,episodeid, ))
+    return redirect('/pod/'+podcastid)
+
+@app.route('/delete/', defaults={'podcastid': ''})
+@app.route('/delete/<podcastid>')
+@login_required
+def deletepodview(podcastid):
+    pod = podcast.getPodcastById(podcastid)
+    if(pod == None):
+        return "ERROR: Data mismatch.", 500
+    return render_template("delete.html", pod=pod, ep=None)
+
+@app.route('/delete/', defaults={'podcastid': '', 'episodeid': ''})
+@app.route('/delete/<podcastid>/<episodeid>')
+@login_required
+def deleteepview(podcastid, episodeid):
+    pod = podcast.getPodcastById(podcastid)
+    if(pod == None):
+        return "ERROR: Data mismatch.", 500
+    if int(episodeid) not in [e.episodeid for e in pod.getAllEpisodes()]:
+        return "ERROR: Data mismatch.", 500
+    ep = list(filter(lambda e : e.episodeid == int(episodeid), pod.getAllEpisodes()))[0]
+    return render_template("delete.html", pod=pod, ep=ep)
+

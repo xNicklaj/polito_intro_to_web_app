@@ -3,26 +3,22 @@
 {% block title%}Home{% endblock %}
 {% block content %}
 <section id="home" class="df col"> 
-    {% if data["latest"]|length > 0%}
-        {%- call macro.scrollx(title="Ultime uscite") %}
+    {%- call macro.scrollx(title="Ultime uscite") %}
+        {% if data["latest"]|length > 0%}
             {% for d in data["latest"] %}
             {{ macro.card(data['episode'][(d[0], d[1])].title, data['podcast'][d[0]].title, data['podcast'][d[0]].thumbnail, "/pod/" + d[0]|string + "/" + d[1]|string) }}
             {% endfor %}
-        {%- endcall %}
-    {% else %}
-        {{ macro.empty_section("Attendi che vengano caricati nuovi episodi per riempire questa sezione.") }}
-    {% endif %}
-    
+        {% else %}
+            {{ macro.empty_section("Attendi che vengano caricati nuovi episodi per riempire questa sezione.") }}
+        {% endif %} 
+    {%- endcall %}
     {% if current_user.is_authenticated %}
-        <section class="df col" id="genres">
-            <h2 class="accent-color">I generi che ti piacciono</h2>
-            <div class="dfr">
+        {%- call macro.scrollx(title="I generi che ti piacciono") %}
                 {% if data["categories"]|length > 0 %}
                 {% else%}
                     {{ macro.empty_section("Inizia a seguire dei podcast per riempire questa sezione.") }}
                 {% endif %}
-            </div>
-        </section>
+        {%- endcall %}
     {% endif %}
 </section>
 {% endblock %}

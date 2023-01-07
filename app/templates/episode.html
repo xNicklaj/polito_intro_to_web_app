@@ -5,8 +5,12 @@
 {% block title%}{{ ep.title }}{% endblock %}
 {% block content %}
 {% call macro.presentation(ep.title, pod.title, pod.thumbnail, "/api/follow/"+ep.podcast_podcastid|string, is_following, ep.description, "/pod/"+ep.podcast_podcastid|string) %}
-<div class="df row" id="pod-ep-play">
+<div class="df row" id="pod-action">
     <a href="/play/{{ ep.podcast_podcastid }}/{{ ep.episodeid }}">{{ macro.compositeplay() }}</a>
+    {% if pod.user_username == current_user.username %}
+    <button class="action-btn" id="edit-btn"><i class="bi-pencil accent-color"></i></button>
+    <button class="action-btn" id="delete-btn"><i class="bi-trash accent-color"></i></button>
+    {% endif %}
 </div>
 {% endcall %}
 <section>
@@ -35,4 +39,7 @@
     </form>
     {% endif %}
 </section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/action.js') }}"></script>
 {% endblock %}

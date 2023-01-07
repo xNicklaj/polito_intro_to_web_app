@@ -2,6 +2,8 @@
 {% import 'macro.html' as macro %}
 {% block title %}Nuovo podcast{% endblock %}
 {% block content %}
+{% set has_podcasts = created|length > 0 %}
+{% if has_podcasts %}
 <section id="podcastlist" class="df col">
     {%- call macro.scrollx(title="Modifica i tuoi podcast") %}
         {% for p in created %}
@@ -9,8 +11,9 @@
         {% endfor%}
     {%- endcall %}
 </section>
+{% endif %}
 <section id="podcastlist" class="df col">
-    <h2 class="accent-color">Oppure crea un nuovo podcast</h2>
+    <h2 class="accent-color">{% if has_podcasts%}Oppure c{% else %}C{% endif %}rea un nuovo podcast</h2>
     <form method="POST" action="/api/newpodcast" class="df col" enctype="multipart/form-data">
         <div class="df row mb8">
             <div class="p16 df col bg-darker card-input" href="{{main_href}}">

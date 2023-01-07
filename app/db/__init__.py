@@ -4,6 +4,7 @@ from os.path import dirname, join
 
 def create_connection():
     conn = sqlite3.connect(join(dirname(__file__), "App.db"))
+    conn.execute("PRAGMA foreign_keys = 1")
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     return (conn, cursor)

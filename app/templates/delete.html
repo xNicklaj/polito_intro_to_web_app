@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block favicon %}{{ url_for('static', filename='images/'+pod.thumbnail) }}{% endblock %}
+{% block fav_mime %}{{ pod.thumbnail.split('.')[-1] }}{% endblock %}
+{% set is_episode = ep != None%}
+{% block title%}Delete {% if is_episode %}{{ ep.title }}{% else %}{{ pod.title }}{% endif %}{% endblock %}
+{% block content %}
+<form class="center w100 df col" action="/api/remove/{% if is_episode %}episode{% else %}podcast{% endif %}" method="POST">
+    <input type="hidden" name="podcastid" value="{{ pod.podcastid }}"/>
+    {% if is_episode %}
+    <input type="hidden" name="episodeid" value="{{ ep.episodeid }}" />
+    {% endif %}
+    <h2 class="accent-color">Confermi la rimozione di "{% if is_episode %}{{ ep.title }} - {% endif %}{{ pod.title }}"?</h2>
+    <button class="accent-color p8 btn-square btn-small bg-accent-color fg-dark">Conferma</button>
+</form>
+{% endblock %}

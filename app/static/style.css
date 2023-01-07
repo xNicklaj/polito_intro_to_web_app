@@ -27,6 +27,8 @@ i{
 
 button{
     cursor: pointer;
+    border: none;
+    outline: none
 }
 
 html, body{
@@ -70,12 +72,14 @@ textarea{
     padding: 1em;
     font-family: inherit;
     background-color: transparent;
+    font-size: inherit
 }
 
 input{
     background-color: transparent;
     outline: none;
     border: none;
+    font-size: inherit;
 }
 
 input[type="range"]{
@@ -382,6 +386,10 @@ input[type="file"]{
     flex-direction: column;
 }
 
+.p0{
+    padding: 0;
+}
+
 /* Half rem padding */
 .p8{
     padding: .5rem;
@@ -631,9 +639,15 @@ input[type="file"]{
     font-weight: bold;
 }
 
-#pod-ep-play{
+#pod-action{
     margin-left: 1rem;
     transform: translateY(.2rem);
+}
+
+#pod-action .action-btn{
+    font-size: 1.4em; 
+    margin-left: .2rem;
+    transform: translateY(-.25em)
 }
 
 .compositeplay{
