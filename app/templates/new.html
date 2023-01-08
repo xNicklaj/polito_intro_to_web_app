@@ -15,19 +15,30 @@
 <section id="podcastlist" class="df col">
     <h2 class="accent-color">{% if has_podcasts%}Oppure c{% else %}C{% endif %}rea un nuovo podcast</h2>
     <form method="POST" action="/api/newpodcast" class="df col" enctype="multipart/form-data">
-        <div class="df row mb8">
+        <div class="df row">
             <div class="p16 df col bg-darker card-input" href="{{main_href}}">
                 <div class="stack">
                     <img src="{{ url_for('static', filename='images/pod_default.jpg') }}">
                     <button></button>
-                    <input type="file" name="newpodcast_thumbnail"/>
+                    <input type="file" name="newpodcast_thumbnail" accept="image/*"/>
                 </div>
                 <h3 class="accent-color"><input type="text" name="newpodcast_title" placeholder="Titolo"/></h3>
                 <h4>{{ current_user.display_name }}</h4>
             </div>
             <textarea name="newpodcast_description" class="bg-darker w100" placeholder="Di cosa tratterà il tuo podcast?"></textarea>
         </div>
-        <input type="submit" value="Crea" class="accent-color p8 btn-square bg-accent-color fg-dark btn-small"/>
+        <div class="df row fw">
+            {% for c in categories%} 
+            <div class="cat-btn-wrapper mt8">
+                <input type="checkbox" name="cat-{{ c }}"/>
+                <button for="cat-{{ c }}" class="btn-square p8  accent-color br25">{{ c }}</button>
+            </div>
+            {% endfor %}
+        </div>
+        <input type="submit" value="Crea" class="accent-color p8 mt8 btn-square bg-accent-color fg-dark btn-small"/>
     </form>
 </section>
-{% endblock%}
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cat-click.js') }}"></script>
+{% endblock %}

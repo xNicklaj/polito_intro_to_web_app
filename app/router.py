@@ -55,6 +55,13 @@ def api_login():
 @app.route("/api/signout")
 def signout():
     logout_user()
+    session['last_played']['ep'] = None
+    session['last_played']['pod'] = None
+    session['last_played']['meta'] = {
+        'is_playing': False,
+        'current_time': 0,
+        'tickid': 0
+    }
     return redirect("/")
 
 @app.route("/")
@@ -72,8 +79,17 @@ def home():
     data["podcast"] = dict()
     for p in all_podcasts:
         data["podcast"][p.podcastid] = p
-
-    data["categories"] = []
+    data["similar"] = []
+    if(current_user.is_authenticated):
+        # Get all categories of all podcasts followed
+        categories = [podcast.getPodcastById(p).category for p in user.getUserByUsername(current_user.username).getFollowingPodcasts()]
+        # flatten list
+        categories = [c for elem in categories for c in elem]
+        # Get all episodes of all podcasts with some of those categories
+        similar = [pod.getAllEpisodes() for pod in list(filter(lambda p : any(chk in p.category for chk in categories), podcast.getAllPodcasts()))]
+        # flatten list
+        similar = [e for p in similar for e in p]
+        data["similar"] = [(e.podcast_podcastid, e.episodeid) for e in similar]
     return render_template("home.html", data=data)
 
 
@@ -112,7 +128,8 @@ def new():
     if not current_user.is_creator:
         return redirect("/")
     created = [podcast.rowToObject(q) for q in query("SELECT * FROM podcast WHERE user_username = ?", (current_user.username,))]
-    return render_template("new.html", created=created)
+    categories = podcast.getAllCategories()
+    return render_template("new.html", created=created, categories=categories)
 
 @app.route("/api/newpodcast", methods=["POST"])
 @login_required
@@ -121,15 +138,20 @@ def newpodcast():
         return 404.
     if(request.form["newpodcast_description"] == None or request.form["newpodcast_title"] == None):
         return redirect(session["history"].get(-1) + "?err=1004")
-    if request.files["newpodcast_thumbnail"].content_length > 0 and "image" in request.files["newpodcast_thumbnail"].mimetype:
+    
+    categories = list(filter(lambda k : "cat-" in k , request.form.keys()))
+    if(len(categories) == 0):
+        return "Select a category", 500
+
+    if "image" in request.files["newpodcast_thumbnail"].mimetype:
         f = request.files["newpodcast_thumbnail"]
         filename = str(abs(hash(f.filename))) + splitext(f.filename)[-1]
         savefile(f, join("images", filename))
     else:
         filename = "pod_default.jpg"
+
         
-    p = podcast.createNew(request.form["newpodcast_description"], request.form["newpodcast_title"], filename, current_user.username)
-    print(p, session["history"])
+    p = podcast.createNew(request.form["newpodcast_description"], request.form["newpodcast_title"], filename, current_user.username, categories)
     if(p == podcast.ERR_COULD_NOT_CREATE):
         return redirect(session["history"].get(-1) + "?err=1005")
     return redirect(f"/pod/{p.podcastid}")
@@ -221,7 +243,7 @@ def playtrack(podcastid, episodeid):
     session['last_played']['pod'] = pod
     session['last_played']['ep'] = ep
     session['last_played']['meta']['is_playing'] = True
-    session['last_played']['meta']['currentTime'] = 0
+    session['last_played']['meta']['current_time'] = 0
     session['last_played']['meta']['tickid'] = 0
     return redirect(session["history"].get(-1))
 
@@ -230,9 +252,10 @@ def updatetrack():
     is_playing = request.form["isPlaying"] == 'true'
     current_time = request.form["currentTime"]
     tickid = request.form["tickid"]
+    playid = request.form["playID"]
     if(is_playing == None or current_time == None):
         return "ERROR: Data mismatch.", 500
-    if  int(tickid) > session['last_played']['meta']['tickid']:
+    if int(tickid) > session['last_played']['meta']['tickid'] and int(playid.split('_')[0]) == session['last_played']['pod'].podcastid and int(playid.split('_')[1]) == session['last_played']['ep'].episodeid:
         session['last_played']['meta'] = {
             'is_playing': is_playing,
             'current_time': float(current_time),

@@ -27,7 +27,7 @@
         </div>
         {% if button_action != '#' %}
         <div class="df row pod-meta-social">
-            <form method="POST" action="{{ button_action }}"><button class="accent-color p8 btn-square btn-small {% if button_fill == True %}bg-accent-color fg-dark{% endif %}">{% if is_following %}Segui già{% else %}Segui{% endif %}</button></form>
+            <form method="POST" action="{{ button_action }}"><button class="accent-color p8 btn-square btn-small {% if button_fill == True %}bg-accent-color fg-dark{% endif %}">{% if button_fill %}Segui già{% else %}Segui{% endif %}</button></form>
             {% if caller != '' %}
             {{ caller() }}
             {% endif %}

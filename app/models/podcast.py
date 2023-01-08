@@ -28,6 +28,7 @@ class Podcast():
 
     def getAllEpisodes(self):
         return getEpisodeByPodcastid(self.podcastid)
+    
 
 def rowToObject(row):
     return Podcast(row["podcastid"], row["description"], row["title"], row["thumbnail"], row["user_username"])
@@ -55,7 +56,7 @@ def getAllCategories():
     res = query(sql, ())
     return [r[0] for r in res]
 
-def createNew(description='', title='', thumbnail='', user_username=0):
+def createNew(description='', title='', thumbnail='', user_username=0, categories=[]):
     sql = "INSERT INTO podcast VALUES(?, ?, ?, ?, ?)"
     podcastid = randint(0, 999999)
     while(query("SELECT * FROM podcast WHERE podcastid = ?", (podcastid,)) != []):
@@ -64,4 +65,12 @@ def createNew(description='', title='', thumbnail='', user_username=0):
     res = query("SELECT * FROM podcast WHERE podcastid = ?", (podcastid,))
     if(res == []):
         return -1
-    return rowToObject(res[0])
+    ret = rowToObject(res[0])
+    sql = "INSERT INTO podcast_category VALUES(?, ?)"
+    for c in categories:
+        cat = c.replace('cat-', '')
+        if(query("SELECT * FROM category WHERE name = ?", (cat,)) == []):
+            query("INSERT INTO category VALUES(?)", (cat,))
+        query(sql, (ret.podcastid, cat,))
+    ret = rowToObject(res[0])
+    return ret

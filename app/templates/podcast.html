@@ -15,9 +15,15 @@
     {% endif %}
 </div>
 {% endcall %}
+<div class="df row fw w100">
+{% for c in pod.category %}
+    <span class="btn-square br25 bg-dark secondary-color p8 pod-cat">{{ c }}</span>
+{% endfor %}
+</div>
 <section class="df col" id="podcast-all-episodes">
     <h1 class="accent-color">Tutti gli episodi</h1>
     <ul class="df col" id="pod-ep-list">
+    {% if ep|length > 0%}
     {% for e in ep %}
         <li class="df col">
             <a class="w100" href="/pod/{{e.podcast_podcastid}}/{{e.episodeid}}">
@@ -35,6 +41,9 @@
             </div>
         </li>
     {% endfor %}
+    {% else %}
+    {{ macro.empty_section("Questo podcast ancora non ha alcun episodio.") }}
+    {% endif %}
     </ul>
 </section>
 {% if pod.user_username == current_user.username %}

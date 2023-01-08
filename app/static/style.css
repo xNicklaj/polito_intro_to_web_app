@@ -148,8 +148,10 @@ input[type="range"]::-webkit-slider-thumb{
 }
 
 .btn-square{
+    --color: var(var(--accent-color));
     border-radius: 6px;
-    border: 1px solid var(--accent-color);
+    border: 1px solid var(--color);
+    color: var(--color);
     background-color: transparent;
     min-width: 8em !important;
     text-transform: uppercase;
@@ -158,6 +160,17 @@ input[type="range"]::-webkit-slider-thumb{
 
 .btn-small{
     max-width: 7em;
+}
+
+.cat-btn-wrapper{
+}
+
+.cat-btn-wrapper input[type="checkbox"]{
+    display: none;
+}
+
+.cat-btn-wrapper button{
+    margin-right: .5rem;
 }
 
 .auth-msg{
@@ -354,6 +367,10 @@ input[type="file"]{
     width: 100%;
 }
 
+.fw{
+    flex-wrap: wrap;
+}
+
 .df{
     display: flex;
 }
@@ -408,6 +425,10 @@ input[type="file"]{
     margin-bottom: .5rem;
 }
 
+.mt8{
+    margin-top: .5rem;
+}
+
 .pl16{
     padding-left: 1rem;
 }
@@ -459,10 +480,12 @@ input[type="file"]{
 
 .accent-color{
     color: var(--accent-color) !important;
+    --color: var(--accent-color) !important;
 }
 
 .secondary-color{
     color: var(--secondary-color) !important;
+    --color: var(--secondary-color) !important;
 }
 
 .bg-dark{
@@ -567,6 +590,12 @@ input[type="file"]{
     object-fit: cover;
 }
 
+.pod-cat{
+    font-size: .6em;
+    max-width: 2em;
+    text-align: center;
+    margin-right: .5rem;
+}
 
 .pod-meta-presentation div{
     justify-content: end;

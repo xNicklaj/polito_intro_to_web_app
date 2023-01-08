@@ -36,6 +36,7 @@ class MediaPlayer{
     const tickdata = new FormData()
     tickdata.append('isPlaying', !audio.paused)
     tickdata.append('currentTime', audio.currentTime)
+    tickdata.append('playID', document.querySelector('.mp-play-meta a:first-child').href.split('pod')[1].slice(1).replace('/', '_'))
     tickdata.append('tickid', this.ntick)
     fetch("/tickupdate", {
       method: 'POST',
@@ -56,25 +57,25 @@ playBtn.addEventListener('click', () => {
   }
 })
 
-audio.addEventListener('timeupdate', (e) =>{
+audio && audio.addEventListener('timeupdate', (e) =>{
   const prog = (audio.currentTime) / (audio.duration) * (progressBar.max - progressBar.min)
   progressBar.style.backgroundSize = prog + '% 100%'
   progressBar.value = prog
   mp.tick() 
 })
 
-audio.addEventListener('play', () => {
+audio && audio.addEventListener('play', () => {
   mp.tick()
   document.querySelector('.mp-play-wrapper .compositeplay i:last-child').classList = 'bi-pause-fill pausetransform'
 })
 
 
-audio.addEventListener('pause', () => {
+audio && audio.addEventListener('pause', () => {
   mp.tick()
   document.querySelector('.mp-play-wrapper .compositeplay i:last-child').classList = 'bi-play-fill'
 })
 
-audio.addEventListener('volumechange', () => {
+audio && audio.addEventListener('volumechange', () => {
   vol = audio.volume
   localStorage.setItem('volume', vol)
   if(audio.volume === 0){
@@ -95,11 +96,13 @@ volumeBar.addEventListener('input', (e) => {
 })
 
 window.addEventListener('load', (e) =>{
-  audio.volume = localStorage.getItem('volume')||1
-  volumeBar.value = (audio.volume) * (volumeBar.max - volumeBar.min)
-  volumeBar.style.backgroundSize = ((audio.volume)*100) + '% 100%'
+  if(audio){
+    audio.volume = localStorage.getItem('volume')||1
+    volumeBar.value = (audio.volume) * (volumeBar.max - volumeBar.min)
+    volumeBar.style.backgroundSize = ((audio.volume)*100) + '% 100%'
   if(audio.volume === 0) volumeIcon.classList.add('bi-volume-mute')
-  if(audio.hasAttribute('autoplay')){
+  }
+  if(audio && audio.hasAttribute('autoplay')){
     if(audio.hasAttribute('data-currentTime')){
       audio.currentTime = audio.getAttribute('data-currentTime')
     }

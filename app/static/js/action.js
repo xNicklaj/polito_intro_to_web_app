@@ -63,10 +63,12 @@ class Editor{
 }
 
 const editor = new Editor()
-document.querySelector('#delete-btn').addEventListener('click', () => {
-    let targetEndpoint = `/delete/${podcastid}`
-    if(isEpisode){
-        targetEndpoint += `/${episodeid}`
-    }
-    document.location.href = targetEndpoint
-})
+if(document.querySelector('#delete-btn') != null){
+    document.querySelector('#delete-btn').addEventListener('click', () => {
+        let targetEndpoint = `/delete/${podcastid}`
+        if(isEpisode){
+            targetEndpoint += `/${episodeid}`
+        }
+        document.location.href = targetEndpoint
+    })
+}

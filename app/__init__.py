@@ -41,6 +41,10 @@ def use_media():
     if '/tickupdate' not in request.url:
         session['last_played']['meta']['tickid'] = 0
 
+@app.before_request
+def debug():
+    return
+
 
 # Flask-Login configuration
 login_manager = LoginManager()
