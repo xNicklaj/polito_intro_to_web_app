@@ -270,8 +270,6 @@ def updateepisode():
     episodeid = request.form['update_episodeid']
     title = request.form['update_title']
     description = request.form['update_description']
-    if(podcastid == None or episodeid == None or title == None or description == None):
-        return "ERROR: Data mismatch.", 500
     pod = podcast.getPodcastById(podcastid)
     if(pod == None):
         return "ERROR: Data mismatch.", 500
@@ -288,8 +286,6 @@ def updatepodcast():
     podcastid = request.form['update_podcastid']
     title = request.form['update_title']
     description = request.form['update_description']
-    if(podcastid == None or title == None or description == None):
-        return "ERROR: Data mismatch.", 500
     pod = podcast.getPodcastById(podcastid)
     if(pod == None):
         return "ERROR: Data mismatch.", 500
@@ -315,8 +311,6 @@ def removepodcast():
 def removeepisode():
     podcastid = request.form['podcastid']
     episodeid = request.form['episodeid']
-    if(podcastid == None):
-        return "ERROR: Data mismatch.", 500
     pod = podcast.getPodcastById(podcastid)
     if(pod.user_username != current_user.username):
         return 401, "Unauthorized." 

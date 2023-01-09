@@ -22,10 +22,10 @@
                     <button></button>
                     <input type="file" name="newpodcast_thumbnail" accept="image/*"/>
                 </div>
-                <h3 class="accent-color"><input type="text" name="newpodcast_title" placeholder="Titolo"/></h3>
+                <h3 class="accent-color"><input type="text" name="newpodcast_title" placeholder="Titolo" maxlength="64"/></h3>
                 <h4>{{ current_user.display_name }}</h4>
             </div>
-            <textarea name="newpodcast_description" class="bg-darker w100" placeholder="Di cosa tratterà il tuo podcast?"></textarea>
+            <textarea name="newpodcast_description" class="bg-darker w100" placeholder="Di cosa tratterà il tuo podcast?" maxlength="500"></textarea>
         </div>
         <div class="df row fw">
             {% for c in categories%} 

@@ -12,7 +12,7 @@
     </head>
     <body>
         <header class="dfr p8 base-header">
-            <input type="text" class="i20r tc input-darker pl16" placeholder="Cerca..."/>
+            <input type="text" class="i20r tc input-darker pl16" placeholder="Cerca..." name="search-field"/>
             <div class="fjse dfr" id="tr-menu">
             {% if current_user.is_authenticated and current_user.is_creator %}
                 <a href="/new"><button class="br25 accent-color b0"><i class="bi-plus-circle-fill fs2"></i></button></a>
@@ -54,6 +54,8 @@
             </div>
         </div>
         <script src="{{ url_for('static', filename='js/media-player.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/form-helper.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/search.js') }}"></script>
         {% block scripts %}
         {% endblock %}
     </body>

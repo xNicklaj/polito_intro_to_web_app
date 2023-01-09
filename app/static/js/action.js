@@ -1,8 +1,8 @@
-const currentURI = document.location.href.replace('http://', '').split('/').splice(1).join('/')
+const currentURI = document.location.pathname
 const isEpisode = new RegExp('pod/\\d{1,6}/\\d{1,6}').test(currentURI)
-const podcastid = document.location.href.replace('http://', '').split('/')[2]
+const podcastid = currentURI.slice(1).split('/')[1]
 let episodeid = 0
-if(isEpisode) episodeid = document.location.href.replace('http://', '').split('/')[3]
+if(isEpisode) episodeid = currentURI.slice(1).split('/')[2]
 
 const EditorState = {
     ACTIVE: 0,

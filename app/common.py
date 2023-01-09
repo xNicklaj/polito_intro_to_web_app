@@ -12,6 +12,12 @@ def timestampToString(timestamp):
     value = datetime.fromtimestamp(timestamp, timezone.utc)
     return value.strftime('%d %b, %Y')
 
+def validateFields(fields):
+    for f in fields:
+        if(f == None or (type(f) == str and len(f) == 0)):
+            return False
+    return True
+
 class History:
     buff : list
     max_size : int 

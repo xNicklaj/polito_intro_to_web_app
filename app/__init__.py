@@ -5,7 +5,7 @@ from flask_login import LoginManager
 from os.path import join, dirname
 
 from app.models.user import getUserByUsername
-from app.common import History
+from app.common import History, validateFields
 
 
 app = Flask(__name__)
@@ -21,10 +21,10 @@ Session(app)
 
 @app.before_request
 def use_history():
-    if('/static/' in request.url or '/tickupdate' in request.url):
-        return
     if 'history' not in session:
         session['history'] = History()
+    if('/static/' in request.url or '/tickupdate' in request.url or request.url == session['history'].get(0)):
+        return
     session['history'].push(request.url)
 
 @app.before_request
@@ -40,6 +40,13 @@ def use_media():
         }
     if '/tickupdate' not in request.url:
         session['last_played']['meta']['tickid'] = 0
+
+@app.before_request
+def use_field_validation():
+    if not validateFields([request.form[v] for v in request.form]):
+        return "ERROR: Data mismatch", 500
+    return
+
 
 @app.before_request
 def debug():

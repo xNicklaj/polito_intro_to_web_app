@@ -30,8 +30,11 @@ class User(UserMixin):
 def rowToObject(row):
     return User(row["display_name"], row["is_creator"], row["password"], row["username"])
 
-def getUserByUsername(username):
+def getUserByUsername(username : str, casesensitive=True):
     sql = 'SELECT * FROM user WHERE username = ?'
+    if not casesensitive:
+        sql = 'SELECT * FROM user WHERE LOWER(username) = ?'
+        username = username.lower()
     try:
         res = query(sql, (username,))[0]
     except:
@@ -42,7 +45,7 @@ def getUserByUsername(username):
 USERNAME_NOT_AVAILABLE = -1
 USER_CREATED = 0
 def createUserIfAvailable(user : User):
-    if(getUserByUsername(user.username) is not None): 
+    if(getUserByUsername(user.username, False) is not None): 
         return -1
     ph = PasswordHasher()
     sql = "INSERT INTO user VALUES (?, ?, ?, ?)"

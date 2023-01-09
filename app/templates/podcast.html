@@ -22,10 +22,10 @@
 </div>
 <section class="df col" id="podcast-all-episodes">
     <h1 class="accent-color">Tutti gli episodi</h1>
-    <ul class="df col" id="pod-ep-list">
+    <ul class="df col" id="pod-ep-list" data-filtering>
     {% if ep|length > 0%}
     {% for e in ep %}
-        <li class="df col">
+        <li class="df col" data-filters="{{ e.title.lower() }}">
             <a class="w100" href="/pod/{{e.podcast_podcastid}}/{{e.episodeid}}">
                 <div class="df col">
                     <div class="df row pod-ep-info">
@@ -54,14 +54,14 @@
             <div class="df col w100">
                 <div class="df row pod-ep-info">
                     <img src="{{ url_for('static', filename='images/'+pod.thumbnail) }}"/>
-                    <input type="text" name="newepisode_title" id="newepisode_title" class="accent-color w100" placeholder="Titolo"/>
+                    <input type="text" name="newepisode_title" id="newepisode_title" class="accent-color w100" placeholder="Titolo" maxlength="64"/>
                     <input type="hidden" name="newepisode_podcastid" value="{{ pod.podcastid }}" />
                 </div>
-                <textarea class="secondary-color pod-ep-description" name="newepisode_description" id="newepisode_description" class="secondary-color" placeholder="Inserisci una descrizione dell'episodio"></textarea>
+                <textarea class="secondary-color pod-ep-description" name="newepisode_description" id="newepisode_description" class="secondary-color" placeholder="Inserisci una descrizione dell'episodio" maxlength="500"></textarea>
             </div> 
             <div class="stack" id="newepisode_filewrapper">
                 <button type="button" class="accent-color p8 btn-square w100">Carica traccia</button>
-                <input type="file" name="newepisode_track" />
+                <input type="file" name="newepisode_track" accept="audio/*"/>
             </div>
         </div>
         <button class="p8 btn-square btn-small fg-dark bg-accent-color" id="newepisode_submit">Crea episodio</button>

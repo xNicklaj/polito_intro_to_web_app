@@ -9,8 +9,8 @@
     </head>
     <body class="center col">
         <form method="POST" action="/api/login" class="dfc">
-            <div class="input-col-wrapper"><label for="username">Inserisci il tuo nome utente</label><input type="text" name="username" id="username" placeholder="Nome utente." class="input-darker input-larger"/></div>
-            <div class="input-col-wrapper"><label for="password">Inserisci la tua password</label><input type="password" name="password" id="password" placeholder="Password." class="input-darker input-larger"/></div> 
+            <div class="input-col-wrapper"><label for="username">Inserisci il tuo nome utente</label><input type="text" name="username" id="username" placeholder="Nome utente." class="input-darker input-larger" maxlength="32"/></div>
+            <div class="input-col-wrapper"><label for="password">Inserisci la tua password</label><input type="password" name="password" id="password" placeholder="Password." class="input-darker input-larger" minlength="8" maxlength="32"/></div> 
             <button type="submit" class="br25 input-darker px16 auth-button fg-dark bg-accent-color" id="auth-button">Accedi</button>
         </form>
         {% if request.args.get("err") == "1002" %}

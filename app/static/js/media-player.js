@@ -87,12 +87,12 @@ audio && audio.addEventListener('volumechange', () => {
 
 progressBar.addEventListener('input', (e) => {
   const prog = (e.target.value - e.target.min) / (e.target.max - e.target.min)
-  audio.currentTime = prog * audio.duration
+  audio && (audio.currentTime = prog * audio.duration)
 })
 
 volumeBar.addEventListener('input', (e) => {
   const prog = (e.target.value - e.target.min) / (e.target.max - e.target.min)
-  audio.volume = prog
+  audio && (audio.volume = prog)
 })
 
 window.addEventListener('load', (e) =>{
@@ -103,9 +103,10 @@ window.addEventListener('load', (e) =>{
   if(audio.volume === 0) volumeIcon.classList.add('bi-volume-mute')
   }
   if(audio && audio.hasAttribute('autoplay')){
+    audio.removeAttribute('mute')
     if(audio.hasAttribute('data-currentTime')){
       audio.currentTime = audio.getAttribute('data-currentTime')
     }
-    audio.removeAttribute('mute')
+    else audio.currentTime = 0
   }
 })

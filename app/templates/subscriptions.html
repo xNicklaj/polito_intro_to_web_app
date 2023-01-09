@@ -7,7 +7,7 @@
 <section class="df col">
     {%- call macro.scrollx(title=d["podcast_meta"].title)%}
         {% for e in d["episodes_data"] %}
-        {{ macro.card(e.title, d["podcast_meta"].title, d["podcast_meta"].thumbnail, "/pod/"+e.podcast_podcastid|string + "/" + e.episodeid|string) }}
+        {{ macro.card(e.title, d["podcast_meta"].title, d["podcast_meta"].thumbnail, "/pod/"+e.podcast_podcastid|string + "/" + e.episodeid|string, e.title.lower().split(' ') + d["podcast_meta"].title.lower().split(' ') + d["podcast_meta"].category) }}
         {% endfor %}
     {%- endcall %}
 </section>

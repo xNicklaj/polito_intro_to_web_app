@@ -9,9 +9,9 @@
     </head>
     <body class="center col">
         <form method="POST" action="/api/signup" class="dfc">
-            <div class="input-col-wrapper"><label for="username">Quale nome utente vuoi usare?</label><input type="text" name="username" id="username" placeholder="Inserisci l'username che vuoi usare." class="input-darker input-larger"/></div>
-            <div class="input-col-wrapper"><label for="password">Inserisci una password per l'accesso</label><input type="password" name="password" id="password" placeholder="Crea una password." class="input-darker input-larger"/></div> 
-            <div class="input-col-wrapper"><label for="display_name">Quale nome vuoi mostrare agli altri utenti?</label><input type="text" name="display_name" id="display_name" placeholder="Inserisci il nome che verrà visualizzato per il tuo profilo." class="input-darker input-larger"/></div> 
+            <div class="input-col-wrapper"><label for="username">Quale nome utente vuoi usare?</label><input type="text" name="username" id="username" placeholder="Inserisci l'username che vuoi usare." class="input-darker input-larger" maxlength="32"/></div>
+            <div class="input-col-wrapper"><label for="password">Inserisci una password per l'accesso</label><input type="password" name="password" id="password" placeholder="Crea una password." class="input-darker input-larger" minlength="8" maxlength="32"/></div> 
+            <div class="input-col-wrapper"><label for="display_name">Quale nome vuoi mostrare agli altri utenti?</label><input type="text" name="display_name" id="display_name" placeholder="Inserisci il nome che verrà visualizzato per il tuo profilo." class="input-darker input-larger" maxlength="32"/></div> 
             <div >
                 <input type="hidden" name="is_creator" id="is_creator_hidden" value="off" />
                 <input type="checkbox" name="is_creator" id="is_creator" /><label for="is_creator">Voglio registrare l'account come creator.</label>
