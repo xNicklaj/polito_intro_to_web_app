@@ -293,7 +293,22 @@ def updatepodcast():
         return 401, "Unauthorized." 
     query("UPDATE podcast SET title = ?, description = ? WHERE podcastid = ?", (title, description, podcastid,))
     return redirect(session["history"].get(-1))
-    
+
+@app.route('/api/update/comment', methods=["POST"])
+@login_required
+def updatecomment():
+    podcastid = request.form['podcastid']
+    episodeid = request.form['episodeid']
+    content = request.form['content']
+    timestamp = request.form['timestamp']
+    if(podcastid == None or episodeid == None or timestamp == None or content == None):
+        return "ERROR: Data mismatch.", 500
+    res = query("SELECT * FROM comment WHERE episode_podcast_podcastid = ? AND episode_episodeid = ? AND date_published = ? AND user_username = ?", (podcastid, episodeid, timestamp, current_user.username, ))
+    if(len(res) == 0): 
+        return "ERROR: Data mismatch.", 500
+    query("UPDATE comment SET content = ? WHERE episode_podcast_podcastid = ? AND episode_episodeid = ? AND date_published = ? AND user_username = ?", (content, podcastid, episodeid, timestamp, current_user.username, ))
+    return redirect(session["history"].get(-1))
+
 @app.route('/api/remove/podcast', methods=["POST"])
 @login_required
 def removepodcast():
@@ -318,6 +333,17 @@ def removeepisode():
         return "ERROR: Data mismatch.", 500
     query("DELETE FROM episode WHERE podcast_podcastid = ? AND episodeid = ?", (podcastid,episodeid, ))
     return redirect('/pod/'+podcastid)
+
+@app.route('/api/remove/comment', methods=["POST"])
+@login_required
+def removecomment():
+    podcastid = request.form['podcastid']
+    episodeid = request.form['episodeid']
+    timestamp = request.form['timestamp']
+    if(podcastid == None or episodeid == None or timestamp == None):
+        return "ERROR: Data mismatch.", 500
+    query("DELETE FROM comment WHERE episode_podcast_podcastid = ? AND episode_episodeid = ? AND date_published = ? AND user_username = ?", (podcastid, episodeid, timestamp, current_user.username, ))
+    return redirect(session["history"].get(-1))
 
 @app.route('/delete/', defaults={'podcastid': ''})
 @app.route('/delete/<podcastid>')

@@ -10,7 +10,7 @@ class FilteredContainer{
     update(value){
         this.elements.sort((a, b) => a.index - b.index).forEach(e => {
             if(Array.from(this.root.children).includes(e.elem)) this.root.removeChild(e.elem)
-            const isShown = value === '' || e.elem.getAttribute('data-filters').split(' ').map(f => f.includes(value)).includes(true)
+            const isShown = value === '' || e.elem.getAttribute('data-filters').includes(value) > 0
             if(isShown) this.root.appendChild(e.elem)
         })
     }

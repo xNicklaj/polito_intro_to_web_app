@@ -18,9 +18,22 @@
     <div class="df col">
         {% if comments|length > 0%}
             {% for c in comments %}
-            <article class="df col" id="comment">
-                <div class="df row"><span class="accent-color">{{ c['user_data'].display_name }}</span><span class="secondary-color">{{ timestampToString(c['comment_data'].date_published) }}</span></div>
-                <p class="secondary-color">{{ c['comment_data'].content }}</p>
+            <article class="df col" id="comment" {% if c['user_data'].username == current_user.username %} data-editable {% endif %}>
+                <div class="df row">
+                    <a class="accent-color" href="/p/{{ c['user_data'].username }}">{{ c['user_data'].display_name }}</a>
+                    <span class="secondary-color" data-timestamp="{{ c['comment_data'].date_published }}">{{ timestampToString(c['comment_data'].date_published) }}</span>
+                    {% if c['user_data'].username == current_user.username %}
+                    <button class="action-btn" id="edit-btn"><i class="bi-pencil accent-color"></i></button>
+                    {% set formid = '{:0=13}'.format(range(0, 9999999999999) | random) %}
+                    <form id="delete-form-{{ formid }}" method="POST" action="/api/remove/comment">
+                    <input type="hidden" name="timestamp" form="delete-form-{{ formid }}" value="{{ c['comment_data'].date_published }}"/>
+                        <input type="hidden" name="podcastid" form="delete-form-{{ formid }}" value="{{ pod.podcastid }}"/>
+                        <input type="hidden" name="episodeid" form="delete-form-{{ formid }}" value="{{ ep.episodeid }}"/>
+                        <button class="action-btn" form="delete-form-{{ formid }}"><i class="bi-trash accent-color"></i></button>
+                    </form>
+                    {% endif %}
+                </div>
+                <p class="secondary-color w100">{{ c['comment_data'].content }}</p> 
             </article>
             {% endfor %}
         {% else%} 
