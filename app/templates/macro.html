@@ -21,8 +21,8 @@
         <div class="df row pod-meta-presentation">
             <img src="{{ url_for('static', filename='images/'+thumbnail) }}" />
             <div class="df col">
-                <h2 class="accent-color">{{ title }}</h2>
-                <h1 class="accent-color"><a href="{{ subtitle_link }}">{{ subtitle }}</a></h1>
+                <h2 class="accent-color pod-meta-title">{{ title }}</h2>
+                <h1 class="accent-color pod-meta-subtitle"><a href="{{ subtitle_link }}">{{ subtitle }}</a></h1>
             </div>
         </div>
         {% if button_action != '#' %}

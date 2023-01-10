@@ -41,7 +41,10 @@ def getAllPodcasts():
 def getPodcastById(podcastid):
     sql = "SELECT * FROM podcast WHERE podcastid = ?"
     params = (podcastid,)
-    return rowToObject(query(sql, params)[0])
+    try:
+        return rowToObject(query(sql, params)[0])
+    except:
+        return None
 
 def getPodcastByUsername(username):
     sql = "SELECT * FROM podcast WHERE user_username = ?"

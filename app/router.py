@@ -163,7 +163,7 @@ def newpodcast():
 def podcastview(podcastid):
     pod = podcast.getPodcastById(podcastid)
     if(pod == None):
-        return 404
+        return "Podcast not found.", 404
     ep = pod.getAllEpisodes()
     creator = user.getUserByUsername(pod.user_username)
     is_following = current_user.is_authenticated and query("SELECT * FROM following WHERE podcast_podcastid = ? AND user_username = ?", (pod.podcastid, current_user.username,)) != []
@@ -183,7 +183,7 @@ def follow(podcastid):
 @login_required
 def newepisode():
     if not current_user.is_creator:
-        return 404.
+        return "Not authorised.", 401.
     if(request.form["newepisode_description"] == None or request.form["newepisode_title"] == None or request.form["newepisode_podcastid"] == None or request.files["newepisode_track"].content_length > 0):
         return redirect("/pod/" +  request.form["newepisode_podcastid"] + "?err=1004")
     if(podcast.getPodcastById(request.form["newepisode_podcastid"]).user_username != current_user.username):
@@ -206,7 +206,7 @@ def episodeview(podcastid, episodeid):
     try:
         ep = list(filter(lambda e : int(e.episodeid) == int(episodeid), episode.getEpisodeByPodcastid(podcastid)))[0]
     except:
-        return "Not found", 404
+        return "Episode not found", 404
     comm = ep.getComments()
     pod = podcast.getPodcastById(ep.podcast_podcastid)
     comments = list()
