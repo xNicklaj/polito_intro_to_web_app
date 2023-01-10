@@ -13,41 +13,25 @@
         <span class="df row"><h2 class="accent-color">{{ user.display_name }}</h2>{% if current_user.is_authenticated and current_user.username == user.username %}<a href="/api/signout"><i class="bi-box-arrow-right"></i></a>{% endif %}</span>
         <h1 class="accent-color">{{ user.username }}</h1>
     </section> 
-    <section class="df col w100" id="profile-following">
-        <h2 class="accent-color">Podcast seguiti</h2>
-        <div class="dfr w100 scrollx">
-            {% if following|length > 0 %}
-                {% for f in following %}
-                {% set thumbnail_url =  'images/'+f.thumbnail%}
-                <a class="p16 df col bg-darker card" href="/pod/{{f.podcastid}}">
-                    <img src="{{url_for('static', filename=thumbnail_url)}}"/>
-                    <h3 class="accent-color">{{f.title}}</h3>
-                    <h4>{{ getUserByUsername(f.user_username).display_name }}</h4>
-                </a>
-                {% endfor %}
-            {% else%}
-                {{ macro.empty_section("Inizia a seguire dei podcast per riempire questa sezione." if current_user.username == user.username else "Questo utente non segue nessun podcast.") }}
-            {% endif %}
-
-        </div>
-    </section>
-    <section class="df col w100" id="profile-created">
-        <h2 class="accent-color">Podcast prodotti</h2>
-        <div class="dfr w100 scrollx">
-            {% if created|length > 0 %}
-                {% for f in created %}
-                {% set thumbnail_url =  'images/'+f.thumbnail%}
-                <a class="p16 df col bg-darker card" href="/pod/{{f.podcastid}}">
-                    <img src="{{url_for('static', filename=thumbnail_url)}}"/>
-                    <h3 class="accent-color">{{f.title}}</h3>
-                    <h4>{{ getUserByUsername(f.user_username).display_name }}</h4>
-                </a>
-                {% endfor %}
-            {% else %}
-                {{ macro.empty_section("Crea dei podcast per riempire questa sezione." if current_user.username == user.username else "Questo utente non ha creato nessun podcast.") }}
-            {% endif %}
-
-        </div>
-    </section>
+    {%- call macro.scrollx(title="Podcast seguiti")%}
+        {% if following|length > 0 %}
+            {% for f in following %}
+            {{ macro.card(f.title, getUserByUsername(f.user_username).display_name, f.thumbnail, '/pod/'+f.podcastid|string, f.category + [f.title + f.user_username]) }}
+            {% endfor %}
+        {% else%}
+            {{ macro.empty_section("Inizia a seguire dei podcast per riempire questa sezione." if current_user.username == user.username else "Questo utente non segue nessun podcast.") }}
+        {% endif %}
+    {%- endcall%}
+    {% if user.is_creator %}
+    {%- call macro.scrollx(title="Podcast prodotti")%}
+        {% if created|length > 0 %}
+            {% for f in created %}
+            {{ macro.card(f.title, getUserByUsername(f.user_username).display_name, f.thumbnail, '/pod/'+f.podcastid|string, f.category + [f.title + f.user_username]) }}
+            {% endfor %}
+        {% else%}
+            {{ macro.empty_section("Crea dei podcast per riempire questa sezione." if current_user.username == user.username else "Questo utente non segue nessun podcast.") }}
+        {% endif %}
+    {%- endcall%}
+    {% endif %}
 </section>
 {% endblock %}

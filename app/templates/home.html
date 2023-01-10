@@ -23,5 +23,14 @@
                 {% endif %}
         {%- endcall %}
     {% endif %}
+    {%- call macro.scrollx(title="Podcast caricati recentemente") %}
+        {% if data["podcast"]|length > 0%}
+            {% for i in data["podcast"] %}
+            {{ macro.card(data["podcast"][i].title, data["user"][data["podcast"][i].user_username].display_name, data["podcast"][i].thumbnail, "/pod/" + data["podcast"][i].podcastid|string, data["podcast"][i].title.split(' ') + data["podcast"][i].category) }}
+            {% endfor %}
+        {% else %}
+            {{ macro.empty_section("Attendi che vengano caricati nuovi episodi per riempire questa sezione.") }}
+        {% endif %} 
+    {%- endcall %}
 </section>
 {% endblock %}

@@ -80,6 +80,9 @@ def home():
     for p in all_podcasts:
         data["podcast"][p.podcastid] = p
     data["similar"] = []
+    data["user"] = dict()
+    for p in data["podcast"]:
+        data["user"][data["podcast"][p].user_username] = user.getUserByUsername(data["podcast"][p].user_username)
     if(current_user.is_authenticated):
         # Get all categories of all podcasts followed
         categories = [podcast.getPodcastById(p).category for p in user.getUserByUsername(current_user.username).getFollowingPodcasts()]
@@ -91,7 +94,6 @@ def home():
         similar = [e for p in similar for e in p]
         data["similar"] = [(e.podcast_podcastid, e.episodeid) for e in similar]
     return render_template("home.html", data=data)
-
 
 @app.route("/subscriptions")
 @login_required
