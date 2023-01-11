@@ -98,3 +98,13 @@ if(t != null){
     isEpisode ? '/api/update/episode' : '/api/update/podcast',
     'POST')
 }
+
+if(document.querySelector('#delete-btn') != null){
+    document.querySelector('#delete-btn').addEventListener('click', () => {
+        let targetEndpoint = `/delete/${podcastid}`
+        if(isEpisode){
+            targetEndpoint += `/${episodeid}`
+        }
+        document.location.href = targetEndpoint
+    })
+}

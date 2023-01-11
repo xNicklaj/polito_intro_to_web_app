@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% import "macro.html" as macro %}
+{% block title %}Le tue iscrizioni{% endblock %}
+{% block content %}
+{% if data|length > 0 %}
+{% for d in data %}
+<section class="df col">
+    {% if d["episodes"]|length > 0%}
+    {%- call macro.scrollx(title=d["category"])%}
+        {% for e in d["episodes"] %}
+        {{ macro.card(e["episode_meta"].title, e["podcast_meta"].title, e["podcast_meta"].thumbnail, "/pod/"+e["episode_meta"].podcast_podcastid|string + "/" + e["episode_meta"].episodeid|string, e["episode_meta"].title.lower().split(' ') + e["podcast_meta"].title.lower().split(' ') + e["podcast_meta"].category) }}
+        {% endfor %}
+    {%- endcall %}
+    {% endif %}
+</section>
+{% endfor %}
+{% else %}
+{{ macro.empty_section("") }}
+{% endif %}
+{% endblock %}

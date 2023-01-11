@@ -14,6 +14,10 @@ from app.common import savefile, timestampToString
 
 login_manager.login_view = "/login"
 
+@app.errorhandler(404)
+def notfound_handler():
+    return render_template("404.html"), 404
+
 @app.route('/signup')
 def signup():
     return render_template("signup.html")
@@ -108,6 +112,22 @@ def subscriptions():
         })
     return render_template("subscriptions.html", data=data)
 
+@app.route("/categories")
+def categories():
+    categories = [i["name"] for i in query("SELECT name FROM category", ())]
+    data = list()
+    for c in categories:
+        episodes = list(filter(lambda e : c in podcast.getPodcastById(e.podcast_podcastid).category, episode.getAllEpisodes()))
+        data.append({
+            'category': c,
+            'episodes': [{
+                'episode_meta': e,
+                'podcast_meta': podcast.getPodcastById(e.podcast_podcastid)
+            } for e in episodes]
+        })
+    print(data)
+    return render_template("categories.html", data=data)
+
 @app.route("/me")
 @login_required
 def me():
@@ -133,7 +153,7 @@ def new():
     categories = podcast.getAllCategories()
     return render_template("new.html", created=created, categories=categories)
 
-@app.route("/api/newpodcast", methods=["POST"])
+@app.route("/api/new/podcast", methods=["POST"])
 @login_required
 def newpodcast():
     if not current_user.is_creator:
@@ -163,7 +183,7 @@ def newpodcast():
 def podcastview(podcastid):
     pod = podcast.getPodcastById(podcastid)
     if(pod == None):
-        return "Podcast not found.", 404
+        return notfound_handler()
     ep = pod.getAllEpisodes()
     creator = user.getUserByUsername(pod.user_username)
     is_following = current_user.is_authenticated and query("SELECT * FROM following WHERE podcast_podcastid = ? AND user_username = ?", (pod.podcastid, current_user.username,)) != []
@@ -179,7 +199,7 @@ def follow(podcastid):
         query("INSERT INTO following VALUES(?, ?)", (current_user.username, podcastid,))
     return redirect(session["history"].get(-1))
 
-@app.route("/api/newepisode", methods=["POST"])
+@app.route("/api/new/episode", methods=["POST"])
 @login_required
 def newepisode():
     if not current_user.is_creator:
@@ -206,7 +226,7 @@ def episodeview(podcastid, episodeid):
     try:
         ep = list(filter(lambda e : int(e.episodeid) == int(episodeid), episode.getEpisodeByPodcastid(podcastid)))[0]
     except:
-        return "Episode not found", 404
+        return notfound_handler()
     comm = ep.getComments()
     pod = podcast.getPodcastById(ep.podcast_podcastid)
     comments = list()
@@ -218,7 +238,7 @@ def episodeview(podcastid, episodeid):
     is_following = current_user.is_authenticated and len(list(filter(lambda f : f == pod.podcastid, user.getUserByUsername(current_user.username).getFollowingPodcasts()))) > 0
     return render_template("episode.html", ep=ep, comments=comments, pod=pod, is_following=is_following, timestampToString=timestampToString)
 
-@app.route('/api/newcomment', methods=["POST"])
+@app.route('/api/new/comment', methods=["POST"])
 @login_required
 def newcomment():
     content = request.form["content"]
@@ -235,13 +255,13 @@ def newcomment():
 @login_required
 def playtrack(podcastid, episodeid):
     if podcastid == None or episodeid == None:
-        return 'ERROR: Data mismatch.', 404
+        return redirect(session["history"].get(-1))
     
     pod = podcast.getPodcastById(podcastid)
     try:
         ep = list(filter(lambda e : e.episodeid == int(episodeid), pod.getAllEpisodes()))[0]
     except:
-        return 'ERROR: Data mismatch.', 404
+        return redirect(session["history"].get(-1))
     session['last_played']['pod'] = pod
     session['last_played']['ep'] = ep
     session['last_played']['meta']['is_playing'] = True

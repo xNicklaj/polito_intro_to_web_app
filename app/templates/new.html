@@ -14,7 +14,7 @@
 {% endif %}
 <section id="podcastlist" class="df col">
     <h2 class="accent-color">{% if has_podcasts%}Oppure c{% else %}C{% endif %}rea un nuovo podcast</h2>
-    <form method="POST" action="/api/newpodcast" class="df col" enctype="multipart/form-data">
+    <form method="POST" action="/api/new/podcast" class="df col" enctype="multipart/form-data">
         <div class="df row">
             <div class="p16 df col bg-darker card-input" href="{{main_href}}">
                 <div class="stack">

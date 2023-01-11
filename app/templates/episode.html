@@ -42,7 +42,7 @@
     </div>
     {% if current_user.is_authenticated %}
     <h2 class="accent-color">Lascia un commento</h2>
-    <form method="POST" action="/api/newcomment">
+    <form method="POST" action="/api/new/comment">
         <input type="hidden" value="{{ ep.podcast_podcastid }}" name="podcastid"/>
         <input type="hidden" value="{{ ep.episodeid }}" name="episodeid"/>
         <div class="df col" id="newcomment-wrapper">

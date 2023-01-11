@@ -40,6 +40,11 @@ def getEpisodeByPodcastid(podcastid):
     res = query(sql, params)
     return [rowToObject(p) for p in res]
 
+def getAllEpisodes():
+    sql = "SELECT * FROM episode ORDER BY release_date DESC"
+    res = query(sql, ())
+    return [rowToObject(p) for p in res]
+
 def createNew(podcast_podcastid=0, title="", description="", track_ext=".wav"):
     release_date = datetime.now(timezone.utc).timestamp()
     episodeid = randint(0, 999999)

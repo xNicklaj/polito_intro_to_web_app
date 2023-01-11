@@ -469,6 +469,10 @@ input[type="file"]{
     border-radius: 25px;
 }
 
+.br50{
+    border-radius: 50%;
+}
+
 .b0{
     border: 0;
     outline: 0;
@@ -503,6 +507,10 @@ input[type="file"]{
 .highlight:hover{
     text-decoration: underline;
     text-decoration-color: inherit;
+}
+
+.pod-card img{
+    border-radius: 30%;
 }
 
 /* IDs */
@@ -601,7 +609,7 @@ input[type="file"]{
     justify-content: end;
 }
 
-.pod-meta-presentation div h2{
+.pod-meta-title{
     font-size: 60px;
     text-transform: capitalize;
     margin: 0;
@@ -843,7 +851,7 @@ input[type="file"]{
         margin-top: 1rem;
     }
 
-    .pod-meta-presentation div h2{
+    .pod-meta-title{
         font-size: 40px;
         line-height: 1;
     }
