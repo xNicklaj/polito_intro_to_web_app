@@ -9,7 +9,7 @@
 
 {%- macro card(title='title', subtitle='subtitle', thumbnail='', main_href='', filters=[], class='')%}
 <a class="p16 df col bg-darker card {{ class }}" href="{{main_href}}" {% if filters|length > 0 %}data-filters="{% for f in filters %}{{ f.lower() }} {% endfor %}" {% endif %}>
-            <img src="{{url_for('static', filename='images/'+thumbnail)}}"/>
+            <img src="{{url_for('static', filename='images/'+thumbnail)}}" alt="{{ thumbnail }}"/>
             <h3 class="accent-color">{{title}}</h3>
             <h4>{{subtitle}}</h4>
         </a>
@@ -19,7 +19,7 @@
 <section class="podcast-metadata">
     <article class="df col">
         <div class="df row pod-meta-presentation">
-            <img src="{{ url_for('static', filename='images/'+thumbnail) }}" />
+            <img src="{{ url_for('static', filename='images/'+thumbnail) }}" alt="{{ thumbnail }}" />
             <div class="df col">
                 <h2 class="accent-color pod-meta-title">{{ title }}</h2>
                 <h1 class="accent-color pod-meta-subtitle"><a href="{{ subtitle_link }}">{{ subtitle }}</a></h1>
@@ -47,9 +47,9 @@
 </div>
 {%- endmacro %}
 
-{%- macro compositeplay(id='', data_pod='', data_ep='') %}
-<div class="stack compositeplay" id="{{ id }}" {% if data_pod != '' and data_ep != ''%}data-podcastid='{{ data_pod }}' data-episodeid='{{ data_ep }}'{% endif %}>
+{%- macro compositeplay(id='', data_pod='', data_ep='', type='div') %}
+<{{ type }} class="stack compositeplay" id="{{ id }}" {% if data_pod != '' and data_ep != ''%}data-podcastid='{{ data_pod }}' data-episodeid='{{ data_ep }}'{% endif %}>
     <i class="bi-circle-fill"></i>
     <i class="bi-play-fill"></i>
-</div>
+</{{ type }} >
 {%- endmacro %}

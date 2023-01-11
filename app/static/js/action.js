@@ -69,19 +69,19 @@ document.querySelectorAll('#comment[data-editable]').forEach(t => {
     }], [
         `<input type="hidden" value='${podcastid}' name='podcastid' />`,
         `<input type="hidden" value='${episodeid}' name='episodeid' />`,
-        `<input type="hidden" value='${t.querySelector("div span").getAttribute('data-timestamp')}' name='timestamp' />`
+        `<input type="hidden" value='${t.querySelector("time").getAttribute('data-timestamp')}' name='timestamp' />`
     ],
     '/api/update/comment',
     'POST')
 })
 
 const t = document.querySelector('.podcast-metadata article')
-if(t != null){
+const eb = document.querySelector('#edit-btn')
+if(t != null && eb != null){
     const hidden_fields = [
         `<input type="hidden" name="update_podcastid" value="${podcastid}">`,
     ]
     if(isEpisode) hidden_fields.push(`<input type="hidden" value='${episodeid}' name='update_episodeid' />`)
-    console.log(isEpisode, hidden_fields)
     const ed = new Editor(t, [{
         node: t.querySelector('.pod-meta-title'),
         name: 'update_title',

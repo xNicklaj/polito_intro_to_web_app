@@ -4,7 +4,6 @@ class FilteredContainer{
     constructor(root){
         this.root = root
         this.elements = Array.from(root.querySelectorAll('*[data-filters]')).map((e, index) => ({elem: e, index}))
-        console.log(this.elements)
     }
 
     update(value){

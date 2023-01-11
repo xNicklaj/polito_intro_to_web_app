@@ -125,7 +125,6 @@ def categories():
                 'podcast_meta': podcast.getPodcastById(e.podcast_podcastid)
             } for e in episodes]
         })
-    print(data)
     return render_template("categories.html", data=data)
 
 @app.route("/me")
@@ -251,7 +250,7 @@ def newcomment():
         return redirect(session['history'].get(-1) + '?err=1005')
     return redirect(session['history'].get(-1))
 
-@app.route('/play/<podcastid>/<episodeid>')
+@app.route('/play/<podcastid>/<episodeid>', methods=["POST"])
 @login_required
 def playtrack(podcastid, episodeid):
     if podcastid == None or episodeid == None:

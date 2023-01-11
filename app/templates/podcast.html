@@ -7,7 +7,7 @@
 {% call macro.presentation(pod.title, creator.display_name, pod.thumbnail, "/api/follow/"+pod.podcastid|string, is_following, pod.description, "/p/"+creator.username) %}
 <div class="df row" id="pod-action">
     {% if ep|length > 0%}
-    <a href="/play/{{ pod.podcastid }}/{{ ep[ep|length - 1].episodeid }}">{{ macro.compositeplay() }}</a>
+    <form action="/play/{{ pod.podcastid }}/{{ ep[ep|length - 1].episodeid }}" method="POST">{{ macro.compositeplay(type="button", id="play-btn") }}</form>
     {% endif %}
     {% if pod.user_username == current_user.username %}
     <button class="action-btn" id="edit-btn"><i class="bi-pencil accent-color"></i></button>
@@ -29,7 +29,7 @@
             <a class="w100" href="/pod/{{e.podcast_podcastid}}/{{e.episodeid}}">
                 <div class="df col">
                     <div class="df row pod-ep-info">
-                        <img src="{{ url_for('static', filename='images/'+pod.thumbnail) }}"/>
+                        <img src="{{ url_for('static', filename='images/'+pod.thumbnail) }}" alt="{{ pod.thumbnail }}"/>
                         <h1 class="accent-color highlight">{{ e.title }}</h1>
                     </div>
                     <p class="secondary-color pod-ep-description">{{ e.description }}</p>
@@ -37,7 +37,7 @@
             </a>
             <div class="df row" id="pod-ep-control">
                 <a href="/play/{{ e.podcast_podcastid }}/{{ e.episodeid }}">{{ macro.compositeplay(data_pod=e.podcast_podcastid, data_ep=e.episodeid) }}</a>
-                <span class="accent-color">{{ timestampToString(e.release_date) }}</span>
+                <time class="accent-color">{{ timestampToString(e.release_date) }}</time>
             </div>
         </li>
     {% endfor %}
@@ -53,7 +53,7 @@
         <div class="df row">
             <div class="df col w100">
                 <div class="df row pod-ep-info">
-                    <img src="{{ url_for('static', filename='images/'+pod.thumbnail) }}"/>
+                    <img src="{{ url_for('static', filename='images/'+pod.thumbnail) }}" alt="{{ pod.thumbnail }}"/>
                     <input type="text" name="newepisode_title" id="newepisode_title" class="accent-color w100" placeholder="Titolo" maxlength="64"/>
                     <input type="hidden" name="newepisode_podcastid" value="{{ pod.podcastid }}" />
                 </div>

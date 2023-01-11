@@ -4,5 +4,4 @@ form.addEventListener('submit', (next) => {
         document.getElementById('is_creator_hidden').disabled = true;
         ne
     }
-    console.log("ciao")
 }, true);

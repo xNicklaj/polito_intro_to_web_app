@@ -28,7 +28,7 @@ i{
 button, input[type="submit"]{
     cursor: pointer;
     border: none;
-    outline: none
+    outline: none;
 }
 
 html, body{
@@ -91,18 +91,19 @@ input[type="range"]{
     background-repeat: no-repeat;
 }
 
-input[type="range"]::-webkit-slider-runnable-track{
+input[type="range"]::-webkit-slider-runnable-track, input[type="range"]::-moz-range-track{
     -webkit-appearance: none;
     border: none;
     background: transparent;
 }
 
-input[type="range"]::-webkit-slider-thumb{
+input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb{
     -webkit-appearance: none;
     background: var(--accent-color);
     height: 20px;
     width: 20px;
     border-radius: 50%;
+    border: 0;
 }
 
 .b{
@@ -136,6 +137,12 @@ input[type="range"]::-webkit-slider-thumb{
 .input-larger{
     min-width: 30rem;
     max-width: 40rem;
+}
+
+.dn{
+    visibility: hidden;
+    width: 0;
+    height: 0;
 }
 
 .base-header{
@@ -658,6 +665,12 @@ input[type="file"]{
    font-weight: bold;
 }
 
+.empty {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
 
 #pod-ep-list li{
     padding-bottom: .5rem;
@@ -671,9 +684,10 @@ input[type="file"]{
     margin-top: .2rem;
 }
 
-#pod-ep-control span{
+#pod-ep-control time{
     margin-left: 1rem;
     font-weight: bold;
+    transform: translateY(.2rem);
 }
 
 #pod-action{
@@ -741,6 +755,17 @@ input[type="file"]{
     font-size: inherit;
 }
 
+#play-btn{
+    font-size: inherit;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+#play-btn i::before{
+    transform: translateY(-.1em)
+}
+
 #newcomment-wrapper label{
     font-size: 1.25em;
 }
@@ -760,11 +785,11 @@ input[type="file"]{
     height: 2em;
 }
 
-#comment div span:first-child{
+#comment div a{
     font-weight: bold;
 }
 
-#comment div span:last-child{
+#comment div time{
     margin-left: .5rem;
 }
 

@@ -6,7 +6,7 @@
 {% block content %}
 {% call macro.presentation(ep.title, pod.title, pod.thumbnail, "/api/follow/"+ep.podcast_podcastid|string, is_following, ep.description, "/pod/"+ep.podcast_podcastid|string) %}
 <div class="df row" id="pod-action">
-    <a href="/play/{{ ep.podcast_podcastid }}/{{ ep.episodeid }}">{{ macro.compositeplay() }}</a>
+    <form action="/play/{{ ep.podcast_podcastid }}/{{ ep.episodeid }}" method="POST">{{ macro.compositeplay(type="button", id="play-btn") }}</form>
     {% if pod.user_username == current_user.username %}
     <button class="action-btn" id="edit-btn"><i class="bi-pencil accent-color"></i></button>
     <button class="action-btn" id="delete-btn"><i class="bi-trash accent-color"></i></button>
@@ -21,7 +21,7 @@
             <article class="df col" id="comment" {% if c['user_data'].username == current_user.username %} data-editable {% endif %}>
                 <div class="df row">
                     <a class="accent-color" href="/p/{{ c['user_data'].username }}">{{ c['user_data'].display_name }}</a>
-                    <span class="secondary-color" data-timestamp="{{ c['comment_data'].date_published }}">{{ timestampToString(c['comment_data'].date_published) }}</span>
+                    <time class="secondary-color" data-timestamp="{{ c['comment_data'].date_published }}">{{ timestampToString(c['comment_data'].date_published) }}</time>
                     {% if c['user_data'].username == current_user.username %}
                     <button class="action-btn" id="edit-btn"><i class="bi-pencil accent-color"></i></button>
                     {% set formid = '{:0=13}'.format(range(0, 9999999999999) | random) %}
