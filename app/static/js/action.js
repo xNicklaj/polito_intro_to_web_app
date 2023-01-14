@@ -9,6 +9,16 @@ const EditorState = {
     INACTIVE: 1
 }
 
+/*
+ * This Object defines a generalized editor composed of these properties:
+ * - target: The target root element of the editor that will be changed into form when editor mode is enabled.
+ * - watch_fields: a list of fields that need to be changed to input when the editor mode is enabled.
+ * - hidden_fields: a list of fields that need to be inserted as hidden into the form when the editor mode is enabled.
+ * - endpoint: the action property of the form.
+ * - method: the method of the form.
+ * 
+ * This allows to turn virtually any container into an editor.
+ */
 class Editor{
     constructor(target, watch_fields, hidden_fields, endpoint, method){
         this.target = target
@@ -59,6 +69,8 @@ class Editor{
         })
     }
 }
+
+// Bind the editor for comments, episodes and podcast.
 
 document.querySelectorAll('#comment[data-editable]').forEach(t => {
     const ed = new Editor(t, [{

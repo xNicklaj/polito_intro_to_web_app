@@ -18,6 +18,7 @@ class Comment():
         self.date_published = date_published
         self.content = content
     
+# Function to transform an sql rot to a python object
 def rowToObject(row):
     return Comment(row["episode_podcast_podcastid"], row["episode_episodeid"], row["user_username"], row["date_published"], row["content"])
 

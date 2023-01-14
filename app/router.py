@@ -14,6 +14,13 @@ from app.common import savefile, timestampToString
 
 login_manager.login_view = "/login"
 
+# Basic endpoints knowledge:
+# /* usually accepts a GET request and displays a page
+# /api/* usually accepts a POST request and redirect to other pages, or at most displays an error
+# /p/* is the user profile endpoint
+# /pod/* is the podcast endpoint
+# /pod/*/* is the episode endpoint
+
 @app.errorhandler(404)
 def notfound_handler():
     return render_template("404.html"), 404
@@ -268,7 +275,7 @@ def playtrack(podcastid, episodeid):
     session['last_played']['meta']['tickid'] = 0
     return redirect(session["history"].get(-1))
 
-@app.route('/tickupdate', methods=["POST"])
+@app.route('/api/tickupdate', methods=["POST"])
 def updatetrack():
     is_playing = request.form["isPlaying"] == 'true'
     current_time = request.form["currentTime"]
