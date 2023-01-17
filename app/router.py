@@ -2,6 +2,7 @@ from app import app
 from flask import render_template, request, redirect, session
 from flask_login import login_user, current_user, login_required, login_manager, logout_user
 from os.path import splitext, join 
+from werkzeug.exceptions import NotFound
 
 
 from app.db import query
@@ -21,7 +22,7 @@ login_manager.login_view = "/login"
 # /pod/* is the podcast endpoint
 # /pod/*/* is the episode endpoint
 
-@app.errorhandler(404)
+@app.errorhandler(NotFound)
 def notfound_handler():
     return render_template("404.html"), 404
 
