@@ -18,9 +18,9 @@
         <div class="df row">
             <div class="p16 df col bg-darker card-input" href="{{main_href}}">
                 <div class="stack">
-                    <img src="{{ url_for('static', filename='images/pod_default.jpg') }}" alt="pod_default.png">
+                    <img src="{{ url_for('static', filename='images/pod_default.jpg') }}" alt="pod_default.png" id="newpod_thumbnail">
                     <button></button>
-                    <input type="file" name="newpodcast_thumbnail" accept="image/*"/>
+                    <input type="file" name="newpodcast_thumbnail" accept="image/*" id="newpod_thumbnail_input"/>
                 </div>
                 <h3 class="accent-color"><input type="text" name="newpodcast_title" placeholder="Titolo" maxlength="64"/></h3>
                 <h4>{{ current_user.display_name }}</h4>
