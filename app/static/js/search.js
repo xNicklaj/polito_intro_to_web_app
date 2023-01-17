@@ -1,5 +1,19 @@
-const containers = []
+/*
+ * The filtering I've implemented is very simple and intuitive. 
+ * It's a keyword based search, that uses the data-filters string present in some components defined in macro.html
+ * to remove or insert these components from their relative parent element.
+ * 
+ * The search takes into consideration only elements whose parent has the data-filtering attribute and that contain some filters,
+ * creating this type of hierarchy:
+ * <parent data-filtering>
+ *   <child>This child is unfiltered</child>
+ *   <child data-filters="filter1 filter2 filter3 ...">This child is filtered</child>
+ *   <child data-filters="filter1 filter2 filter3 ...">This child is filtered</child>
+ *   ...
+ * </parent>
+ */
 
+const containers = []
 class FilteredContainer{
     constructor(root){
         this.root = root

@@ -19,14 +19,17 @@ app.config["MAX_CONTENT_PATH"] = 104857600
 app.config.from_object(__name__)
 Session(app)
 
+# Defines a middleware that hooks in before the request is server to the router and pushes the request URL into the client history
+# unless it's calling an API or asking for a static resource.
 @app.before_request
 def use_history():
     if 'history' not in session:
         session['history'] = History()
-    if('/static/' in request.url or '/tickupdate' in request.url or request.url == session['history'].get(0)):
+    if('/static/' in request.url or request.url == session['history'].get(0) or 'api' in request.url):
         return
     session['history'].push(request.url)
 
+# Defines a middleware that hooks in before each request to define the last_played object if it's not defined.
 @app.before_request
 def use_media():
     if 'last_played' not in session:
@@ -38,18 +41,15 @@ def use_media():
             'current_time': 0,
             'tickid': 0
         }
-    if '/tickupdate' not in request.url:
+    # resets the tickid whenever the user changes page
+    if '/api/tickupdate' not in request.url:
         session['last_played']['meta']['tickid'] = 0
 
+# Defines a middleware that automatically validates entries in POST requests
 @app.before_request
 def use_field_validation():
     if not validateFields([request.form[v] for v in request.form]):
         return "ERROR: Data mismatch", 500
-    return
-
-
-@app.before_request
-def debug():
     return
 
 
@@ -62,4 +62,5 @@ login_manager.init_app(app)
 def load_user(username):
     return getUserByUsername(username)
 
+# Initialize router
 from app import router

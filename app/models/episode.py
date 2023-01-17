@@ -31,6 +31,7 @@ class Episode():
             return [c for c in commentsonepisode if c.user_username == username]
         return commentsonepisode
 
+# Function to transform an sql rot to a python object
 def rowToObject(row):
     return Episode(row["podcast_podcastid"], row["episodeid"], row["title"], row["release_date"], row["track"], row["description"])
 
@@ -47,7 +48,7 @@ def getAllEpisodes():
 
 def createNew(podcast_podcastid=0, title="", description="", track_ext=".wav"):
     release_date = datetime.now(timezone.utc).timestamp()
-    episodeid = randint(0, 999999)
+    episodeid = randint(0, 999999) # Assign a random id as episodeid
     while(query("SELECT * FROM episode WHERE podcast_podcastid = ? AND episodeid = ?", (podcast_podcastid,episodeid,)) != []):
         episodeid = randint(0, 999999)
     track = f"{podcast_podcastid}_{episodeid}{track_ext}"

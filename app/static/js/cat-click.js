@@ -1,3 +1,8 @@
+/*
+ * This js code merely handles the style of the buttons on /createpodcast when clicking on them.
+ * Nothing important or dealbreaking here.
+ */
+
 const btns = document.querySelectorAll('.cat-btn-wrapper button')
 btns.forEach(b => b.addEventListener('click', (e) => {
     chk = document.querySelector(`input[name="${e.target.getAttribute('for')}"]`)

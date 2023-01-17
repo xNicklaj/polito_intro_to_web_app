@@ -30,6 +30,7 @@ class Podcast():
         return getEpisodeByPodcastid(self.podcastid)
     
 
+# Function to transform an sql rot to a python object
 def rowToObject(row):
     return Podcast(row["podcastid"], row["description"], row["title"], row["thumbnail"], row["user_username"])
 

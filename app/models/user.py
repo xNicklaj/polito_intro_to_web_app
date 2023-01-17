@@ -17,6 +17,7 @@ class User(UserMixin):
         self.password = password
         self.username = username
     
+    # Method defined by the UserMixin object interface
     def get_id(self):
         return self.username
     
@@ -25,8 +26,7 @@ class User(UserMixin):
         res = query(sql, (self.username, ))
         return [r[0] for r in res]
 
-# Methods
-
+# Function to transform an sql rot to a python object
 def rowToObject(row):
     return User(row["display_name"], row["is_creator"], row["password"], row["username"])
 
