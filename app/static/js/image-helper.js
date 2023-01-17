@@ -18,7 +18,6 @@ function previewFile(target, src){
       target.src = "";
     }
 }
-ì
 const newpod_thumbnail_input = document.querySelector('#newpod_thumbnail_input');
 const newpod_thumbnail = document.querySelector('#newpod_thumbnail');
 

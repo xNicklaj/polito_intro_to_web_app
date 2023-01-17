@@ -204,7 +204,7 @@ def follow(podcastid):
         query("DELETE FROM following WHERE user_username = ? AND podcast_podcastid = ?", (current_user.username, podcastid,))
     else: 
         query("INSERT INTO following VALUES(?, ?)", (current_user.username, podcastid,))
-    return redirect(session["history"].get(-1))
+    return redirect(session["history"].get(0))
 
 @app.route("/api/new/episode", methods=["POST"])
 @login_required
