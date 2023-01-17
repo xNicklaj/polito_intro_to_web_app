@@ -252,10 +252,10 @@ def newcomment():
     podcastid = request.form["podcastid"]
     episodeid = request.form["episodeid"]
     if(content == None or podcastid == None or episodeid == None):
-        return redirect(session['history'].get(-1) + '?err=1004')
+        return redirect(session['history'].get(0) + '?err=1004')
     if(comment.createNew(podcastid, episodeid, username, content) == comment.ERR_COULD_NOT_CREATE):
-        return redirect(session['history'].get(-1) + '?err=1005')
-    return redirect(session['history'].get(-1))
+        return redirect(session['history'].get(0) + '?err=1005')
+    return redirect(session['history'].get(0))
 
 @app.route('/play/<podcastid>/<episodeid>', methods=["POST"])
 @login_required
@@ -306,7 +306,7 @@ def updateepisode():
     if int(episodeid) not in [e.episodeid for e in pod.getAllEpisodes()]:
         return "ERROR: Data mismatch.", 500
     query("UPDATE episode SET title = ?, description = ? WHERE podcast_podcastid = ? AND episodeid = ?", (title, description, podcastid, episodeid,))
-    return redirect(session["history"].get(-1))
+    return redirect(session["history"].get(0))
             
 @app.route('/api/update/podcast', methods=["POST"])
 @login_required
@@ -320,7 +320,7 @@ def updatepodcast():
     if(pod.user_username != current_user.username):
         return 401, "Unauthorized." 
     query("UPDATE podcast SET title = ?, description = ? WHERE podcastid = ?", (title, description, podcastid,))
-    return redirect(session["history"].get(-1))
+    return redirect(session["history"].get(0))
 
 @app.route('/api/update/comment', methods=["POST"])
 @login_required
@@ -335,7 +335,7 @@ def updatecomment():
     if(len(res) == 0): 
         return "ERROR: Data mismatch.", 500
     query("UPDATE comment SET content = ? WHERE episode_podcast_podcastid = ? AND episode_episodeid = ? AND date_published = ? AND user_username = ?", (content, podcastid, episodeid, timestamp, current_user.username, ))
-    return redirect(session["history"].get(-1))
+    return redirect(session["history"].get(0))
 
 @app.route('/api/remove/podcast', methods=["POST"])
 @login_required
@@ -371,7 +371,7 @@ def removecomment():
     if(podcastid == None or episodeid == None or timestamp == None):
         return "ERROR: Data mismatch.", 500
     query("DELETE FROM comment WHERE episode_podcast_podcastid = ? AND episode_episodeid = ? AND date_published = ? AND user_username = ?", (podcastid, episodeid, timestamp, current_user.username, ))
-    return redirect(session["history"].get(-1))
+    return redirect(session["history"].get(0))
 
 @app.route('/delete/', defaults={'podcastid': ''})
 @app.route('/delete/<podcastid>')
