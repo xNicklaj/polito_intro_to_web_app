@@ -121,11 +121,8 @@ window.addEventListener('load', (e) =>{
     volumeBar.style.backgroundSize = ((audio.volume)*100) + '% 100%'
   if(audio.volume === 0) volumeIcon.classList.add('bi-volume-mute')
   }
+  audio.currentTime = audio.getAttribute('data-currentTime')
   if(audio && audio.hasAttribute('autoplay')){
     audio.removeAttribute('mute')
-    if(audio.hasAttribute('data-currentTime')){
-      audio.currentTime = audio.getAttribute('data-currentTime')
-    }
-    else audio.currentTime = 0
   }
 })
