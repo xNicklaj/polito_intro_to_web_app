@@ -23,7 +23,7 @@ login_manager.login_view = "/login"
 # /pod/*/* is the episode endpoint
 
 @app.errorhandler(NotFound)
-def notfound_handler():
+def notfound_handler(e=NotFound):
     return render_template("404.html"), 404
 
 @app.route('/signup')
@@ -56,9 +56,9 @@ def api_login():
     password = request.form.get("password")
     res = user.verifyCredentials(username, password)
     if username == '' or res == user.INVALID_USERNAME:
-        return redirect(session["history"].get(-1) + "?err=1002")
+        return redirect(session["history"].get(0) + "?err=1002")
     elif password== '' or res == user.PASSWORD_MISMATCH:
-        return redirect(session["history"].get(-1) + "?err=1003")
+        return redirect(session["history"].get(0) + "?err=1003")
     
     usr = user.getUserByUsername(username)
     login_user(usr, True)

@@ -36,7 +36,7 @@
                 </div>
             </a>
             <div class="df row" id="pod-ep-control">
-                <a href="/play/{{ e.podcast_podcastid }}/{{ e.episodeid }}">{{ macro.compositeplay(data_pod=e.podcast_podcastid, data_ep=e.episodeid) }}</a>
+                <button data-post="/play/{{ e.podcast_podcastid }}/{{ e.episodeid }}">{{ macro.compositeplay(data_pod=e.podcast_podcastid, data_ep=e.episodeid) }}</button>
                 <time class="accent-color">{{ timestampToString(e.release_date) }}</time>
             </div>
         </li>
@@ -71,4 +71,5 @@
 {% endblock %}
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/action.js') }}"></script>
+<script src="{{ url_for('static', filename='js/button-helper.js') }}"></script>
 {% endblock %}

@@ -28,9 +28,9 @@
         <div class="dfr" id="root">
            <nav class="df col" id="menu-wrapper">
                 <ul id="menu">
-                    <a class="w100 input-darker dfr accent-color {% if url_for(request.endpoint) == '/' %}bg-accent-color fg-dark{% endif %}" href="/"><li><i class="bi-house-door-fill"></i><span>Home</span></li></a>
-                    <a class="w100 input-darker dfr accent-color {% if url_for(request.endpoint) == '/categories' %}bg-accent-color fg-dark{% endif %}" href="/categories"><li><i class="bi-collection"></i><span>Categorie</span></li></a>
-                    <a class="w100 input-darker dfr accent-color {% if url_for(request.endpoint) == '/subscriptions' %}bg-accent-color fg-dark{% endif %}" href="/subscriptions"><li><i class="bi-disc-fill"></i><span>Le tue iscrizioni</span></li></a>
+                    <a class="w100 input-darker dfr accent-color {% if request.endpoint != None and url_for(request.endpoint) == '/' %}bg-accent-color fg-dark{% endif %}" href="/"><li><i class="bi-house-door-fill"></i><span>Home</span></li></a>
+                    <a class="w100 input-darker dfr accent-color {% if request.endpoint != None and url_for(request.endpoint) == '/categories' %}bg-accent-color fg-dark{% endif %}" href="/categories"><li><i class="bi-collection"></i><span>Categorie</span></li></a>
+                    <a class="w100 input-darker dfr accent-color {% if request.endpoint != None and url_for(request.endpoint) == '/subscriptions' %}bg-accent-color fg-dark{% endif %}" href="/subscriptions"><li><i class="bi-disc-fill"></i><span>Le tue iscrizioni</span></li></a>
                 </ul>
             </nav> 
             <div class="w100 p8" id="content">{% block content %}{% endblock %}</div>
