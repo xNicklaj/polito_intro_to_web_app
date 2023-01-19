@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "export FLASK_APP=app/__init__.py && flask run",
-    "debug": "export FLASK_APP=app/__init__.py && export FLASK_ENV=development && flask run"
+    "debug-linux": "export FLASK_APP=app/__init__.py && export FLASK_ENV=development && flask run",
+    "start-windows": "cmd start.bat",
+    "start-linux": "chmod +x start.sh; ./start.sh"
   },
   "repository": {
     "type": "git",
