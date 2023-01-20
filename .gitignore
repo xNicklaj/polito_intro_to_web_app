@@ -5,3 +5,4 @@ flask_session
 app/static/audio
 app/static/images/*
 !app/static/images/pod_default.jpg
+venv

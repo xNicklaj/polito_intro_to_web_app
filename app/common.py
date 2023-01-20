@@ -10,7 +10,7 @@ stopwords = set()
 def savefile(file, path):
     filename = str(abs(hash(file.filename))) + splitext(file.filename)[-1]
     if not exists(join(dirname(__file__), "tmp")):
-        mkdir(join(dirname(__file__)))
+        mkdir(join(dirname(__file__), "tmp"))
     tmppath = join(dirname(__file__), "tmp", filename)
     file.save(tmppath)
     move(tmppath, join(dirname(__file__), "static", path))
