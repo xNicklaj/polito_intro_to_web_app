@@ -11,7 +11,7 @@ import app.models.user as user
 import app.models.episode as episode
 import app.models.podcast as podcast
 import app.models.comment as comment
-from app.common import savefile, timestampToString
+from app.common import savefile, timestampToString, rake_extractor as getKeywords
 
 login_manager.login_view = "/login"
 
@@ -194,7 +194,7 @@ def podcastview(podcastid):
     ep = pod.getAllEpisodes()
     creator = user.getUserByUsername(pod.user_username)
     is_following = current_user.is_authenticated and query("SELECT * FROM following WHERE podcast_podcastid = ? AND user_username = ?", (pod.podcastid, current_user.username,)) != []
-    return render_template("podcast.html", pod=pod, ep=ep, creator=creator, is_following=is_following, timestampToString=timestampToString)
+    return render_template("podcast.html", pod=pod, ep=ep, creator=creator, is_following=is_following, timestampToString=timestampToString, getKeywords=getKeywords)
 
 @app.route('/api/follow/', defaults={'podcastid': ''})
 @app.route('/api/follow/<podcastid>', methods=["POST"])

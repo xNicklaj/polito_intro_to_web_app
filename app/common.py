@@ -2,6 +2,9 @@ from os.path import join, dirname, splitext, exists
 from os import mkdir
 from shutil import move
 from datetime import datetime, timezone
+from rake_nltk import Rake
+
+stopwords = set()
 
 # Upload file to app/tmp directory, then move it to the final directory based on its format.
 def savefile(file, path):
@@ -48,3 +51,19 @@ class History:
             return self.buff[::-1][index]
         except:
             return None
+
+# Since the type of research that I am using is based on keywords, I've used the rake keyword extractor
+# to strike a balance between most keywords extraction at the best performance score.
+def rake_extractor(text):
+    """
+    Uses Rake to extract the top 5 keywords from a text
+    Arguments: text (str)
+    Returns: list of keywords (list)
+    """
+    r = Rake(language='italian')
+    r.extract_keywords_from_text(text)
+    s = set()
+    for sentence in r.get_ranked_phrases()[:5]:
+        for w in sentence.split(' '):
+            s.add(w)
+    return s

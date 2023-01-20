@@ -6,6 +6,8 @@ E.g. `flask run`
 
 Le dependencies python si trovano come per standard in requirements.txt.
 
+Prima di avviare il server è necessario eseguire `setup.py` per scaricare dei requirements di `rake-nltk`. Il download stamperà a schermo il percorso in cui verranno estratti i file, quindi tienilo a portata di mano per la futura rimozione dei file.
+
 ## Startup
 Una volta configurato python come da requisiti, è possibile avviare il server in tre modi.
 ### Avvio automatico tramite bat/sh
@@ -15,9 +17,7 @@ Il package.json del progetto include dei task di avvio che richiamano automatica
 ### Avvio manuale
 Per avviare manualmente è necessario configurare una variabile di sistema:
 ```
-{
-    'FLASK_APP'=app\init.py
-}
+FLASK_APP=app\init.py
 ```
 Dopo ciò, si può avviare eseguendo il comando `flask run --host=0.0.0.0`
 

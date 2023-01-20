@@ -25,7 +25,7 @@
     <ul class="df col" id="pod-ep-list" data-filtering>
     {% if ep|length > 0%}
     {% for e in ep %}
-        <li class="df col" data-filters="{{ e.title.lower() }}">
+        <li class="df col" data-filters="{{ e.title.lower() }} {{ ' '.join(getKeywords(e.description.lower())) }}">
             <a class="w100" href="/pod/{{e.podcast_podcastid}}/{{e.episodeid}}">
                 <div class="df col">
                     <div class="df row pod-ep-info">
